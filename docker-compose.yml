@@ -1,0 +1,55 @@
+services:
+  bookings:
+    build:
+      context: .
+      dockerfile: ./apps/bookings/Dockerfile
+      target: development
+    command: yarn run start:dev bookings
+    env_file:
+      - ./apps/bookings/.env
+    depends_on:
+      - customer
+      - auth
+      - rabbitmq
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3000:3000'
+  
+  customer:
+    build:
+      context: .
+      dockerfile: ./apps/customer/Dockerfile
+      target: development
+    command: yarn run start:dev customer
+    depends_on:
+      - rabbitmq
+      - auth
+    env_file:
+      - ./apps/customer/.env
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+  auth:
+    build: 
+      context: .
+      dockerfile: ./apps/auth/Dockerfile
+      target: development
+    command: yarn run start:dev auth
+    ports:
+      - '3001:3001'
+    env_file:
+      - ./apps/auth/.env
+    depends_on:
+      - rabbitmq
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+  rabbitmq:
+    image: rabbitmq
+    ports:
+      - '5672:5672'
+  
