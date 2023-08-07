@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CustomerController } from './customer.controller';
 import { CustomerService } from './customer.service';
-import { RmqModule } from '@app/common';
+import { AuthModule, RmqModule } from '@app/common';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi'
 
@@ -14,8 +14,9 @@ import * as Joi from 'joi'
         RABBIT_MQ_CUSTOMER_QUEUE: Joi.string().required()
       }),
     }),
-    RmqModule],
+    RmqModule,
+    AuthModule],
   controllers: [CustomerController],
   providers: [CustomerService],
 })
-export class CustomerModule {}
+export class CustomerModule { }

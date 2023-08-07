@@ -14,13 +14,14 @@ export class BookingsService {
   async getBookings() {
     return await this.bookingsRepository.find({});
   }
-  async createBooking(request: CreateBookingRequest) {
+  async createBooking(request: CreateBookingRequest, authentication: string) {
     const session = await this.bookingsRepository.startTransaction();
     try {
       const order = await this.bookingsRepository.create(request, { session });
       await lastValueFrom(
         this.customerClient.emit('booking_created', {
           request,
+          Authentication: authentication
         }),
       );
       await session.commitTransaction();
