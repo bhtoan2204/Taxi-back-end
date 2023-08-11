@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-local';
 import { UsersService } from './../users/users.service';
@@ -10,6 +10,11 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(phone: string, password: string) {
-    return this.usersService.validateUser(phone, password);
+    try {
+      return this.usersService.validateUser(phone, password);
+    }
+    catch (err) {
+      throw err
+    }
   }
 }

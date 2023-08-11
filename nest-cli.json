@@ -45,6 +45,24 @@
       "compilerOptions": {
         "tsConfigPath": "libs/common/tsconfig.lib.json"
       }
+    },
+    "admin": {
+      "type": "application",
+      "root": "apps/admin",
+      "entryFile": "main",
+      "sourceRoot": "apps/admin/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/admin/tsconfig.app.json"
+      }
+    },
+    "driver": {
+      "type": "application",
+      "root": "apps/driver",
+      "entryFile": "main",
+      "sourceRoot": "apps/driver/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/driver/tsconfig.app.json"
+      }
     }
   }
 }

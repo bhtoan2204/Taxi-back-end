@@ -19,14 +19,15 @@ import {
       const authentication = this.getAuthentication(context);
       return this.authClient
         .send('validate_user', {
-          Authentication: authentication,
+          authentication: authentication,
         })
         .pipe(
           tap((res) => {
+            console.log(res)
             this.addUser(res, context);
           }),
           catchError(() => {
-            throw new UnauthorizedException();
+            throw new UnauthorizedException('cai loz ma');
           }),
         );
     }
@@ -36,8 +37,8 @@ import {
       if (context.getType() === 'rpc') {
         authentication = context.switchToRpc().getData().Authentication;
       } else if (context.getType() === 'http') {
-        authentication = context.switchToHttp().getRequest()
-          .cookies?.Authentication;
+        console.log(context.switchToHttp().getRequest().headers)
+        authentication = context.switchToHttp().getRequest().headers['authentication'];
       }
       if (!authentication) {
         throw new UnauthorizedException(

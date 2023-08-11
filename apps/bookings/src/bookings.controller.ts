@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { BookingsService } from './bookings.service';
 import { CreateBookingRequest } from './dto/create_bookings.request';
-import { JwtAuthGuard } from '@app/common/auth/jwt-auth.guard';
+import { JwtAuthGuard } from '@app/common';
 
 @Controller('bookings')
 export class BookingsController {
@@ -16,6 +16,7 @@ export class BookingsController {
   @UseGuards(JwtAuthGuard)
   async createBookings(@Body() request: CreateBookingRequest, @Req() req: any){
     console.log(req.user)
-    return this.bookingsService.createBooking(request, req.cookies?.Authentication)
+    return this.bookingsService.createBooking(request)
   }
+  
 }

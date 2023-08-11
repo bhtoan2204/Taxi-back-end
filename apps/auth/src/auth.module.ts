@@ -8,9 +8,13 @@ import { AuthService } from './auth.service';
 import { UsersModule } from './users/users.module';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { MongooseModule } from '@nestjs/mongoose';
+import { RefreshToken, RefreshTokenSchema } from './refreshToken/schemas/refreshToken.schema';
+import { RefreshTokenRepository } from './refreshToken/refreshToken.repository';
 
 @Module({
   imports: [
+    MongooseModule.forFeature([{ name: RefreshToken.name, schema: RefreshTokenSchema }]),
     DatabaseModule,
     UsersModule,
     RmqModule,
@@ -34,6 +38,6 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy, RefreshTokenRepository],
 })
 export class AuthModule {}

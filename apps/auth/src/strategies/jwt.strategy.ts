@@ -2,9 +2,9 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { Types } from 'mongoose';
 import { UsersService } from './../users/users.service';
 import { TokenPayload } from '../auth.service';
+import { Types } from 'mongoose';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -15,9 +15,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request: any) => {
-          return request?.Authentication;
-        },
+          return request?.authentication
+        }
       ]),
+      ignoreExpiration: false,
       secretOrKey: configService.get('JWT_SECRET'),
     });
   }
@@ -27,8 +28,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       return await this.usersService.getUser({
         _id: new Types.ObjectId(userId),
       });
-    } catch (err) {
-      throw new UnauthorizedException();
+    }
+    catch (err) {
+      throw new UnauthorizedException("validate strategy:" + err)
     }
   }
 }
