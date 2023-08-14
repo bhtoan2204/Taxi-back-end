@@ -1,1 +1,1 @@
-export const DRIVER_SERVICE = 'DRIVER'
+export const BOOKING_SERVICE = 'BOOKING'

@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { BookingsModule } from './bookings.module';
-import { ValidationPipe } from '@nestjs/common'
+import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {

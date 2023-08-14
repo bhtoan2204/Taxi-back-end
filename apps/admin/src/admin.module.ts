@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { AdminController } from './admin.controller';
 import { AdminService } from './admin.service';
 import { ConfigModule } from '@nestjs/config';
-import Joi from 'joi';
+import * as Joi from 'joi'
 import { AuthModule, DatabaseModule, RmqModule } from '@app/common';
-import { ADMIN_SERVICE } from '../constants/services';
+import { BOOKING_SERVICE } from '../constants/services';
 
 @Module({
   imports: [
@@ -18,9 +18,10 @@ import { ADMIN_SERVICE } from '../constants/services';
     }),
     DatabaseModule,
     RmqModule.register({
-      name: ADMIN_SERVICE,
+      name: BOOKING_SERVICE,
     }),
-    AuthModule],
+    AuthModule
+  ],
   controllers: [AdminController],
   providers: [AdminService],
 })

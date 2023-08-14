@@ -12,6 +12,12 @@ export class User extends AbstractDocument {
 
     @Prop()
     role: string
+
+    @Prop()
+    longtitude: string
+
+    @Prop()
+    latitude: string
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -2,6 +2,7 @@ import { Controller, Get, UseGuards } from '@nestjs/common';
 import { CustomerService } from './customer.service';
 import { EventPattern, Payload, RmqContext, Ctx } from '@nestjs/microservices'
 import { JwtAuthGuard, RmqService } from '@app/common';
+
 @Controller('customer')
 export class CustomerController {
   constructor(

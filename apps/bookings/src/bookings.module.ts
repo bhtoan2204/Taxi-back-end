@@ -22,9 +22,7 @@ import { CUSTOMER_SERVICE } from '../constants/services';
       }),
     DatabaseModule,
     MongooseModule.forFeature([{ name: Booking.name, schema: BookingSchema }]),
-    RmqModule.register({
-      name: CUSTOMER_SERVICE,
-    }),
+    RmqModule,
     AuthModule
   ],
 

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { DriverController } from './driver.controller';
 import { DriverService } from './driver.service';
 import { ConfigModule } from '@nestjs/config';
-import Joi from 'joi';
+import * as Joi from 'joi'
 import { AuthModule, DatabaseModule } from '@app/common';
 
 @Module({

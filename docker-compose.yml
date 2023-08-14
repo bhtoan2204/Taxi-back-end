@@ -31,6 +31,42 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+    ports:
+      - '3004:3004'
+
+  admin:
+    build:
+      context: .
+      dockerfile: ./apps/admin/Dockerfile
+      target: development
+    command: yarn run start:dev admin
+    depends_on:
+      - rabbitmq
+      - auth
+    env_file:
+      - ./apps/admin/.env
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3002:3002'
+
+  driver:
+    build:
+      context: .
+      dockerfile: ./apps/admin/Dockerfile
+      target: development
+    command: yarn run start:dev driver
+    depends_on:
+      - rabbitmq
+      - auth
+    env_file:
+      - ./apps/driver/.env
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3003:3003'
 
   auth:
     build: 
