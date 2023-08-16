@@ -3,9 +3,10 @@ import { MessagePattern } from '@nestjs/microservices';
 import { Response } from 'express';
 import { AuthService, TokenPayload } from './auth.service';
 import { CurrentUser } from './current-user.decorator';
-import JwtAuthGuard from './guards/jwt-auth.guard';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { User } from './users/schemas/users.schema';
+import JwtRefreshGuard from './guards/jwt-refresh.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -14,22 +15,25 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(
-    @Req() request,
-    @Res({ passthrough: true }) response: Response,
+    @Req() request
   ) {
-    return await this.authService.login(request.user, response);
+    return await this.authService.login(request.user);
     // response.send(request.user);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('logout')
-  logout(@Res({ passthrough: true }) response: Response) {
-    this.authService.logout(response);
+  logout(@CurrentUser() user: User) {
+    return this.authService.logout(user);
   }
 
+  @UseGuards(JwtRefreshGuard)
   @Post('refresh')
-  async refresh(@CurrentUser() user: User, @Res({ passthrough: true }) response: Response) {
-    this.authService.refresh(user, response);
-    response.send({ message: 'Token refreshed successfully.' });
+  async refresh(
+    @CurrentUser() user: User,
+    @Req() request
+  ) {
+    return this.authService.refresh(user, request);  
   }
 
   @UseGuards(JwtAuthGuard)

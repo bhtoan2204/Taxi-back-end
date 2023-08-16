@@ -27,7 +27,7 @@ import {
             this.addUser(res, context);
           }),
           catchError(() => {
-            throw new UnauthorizedException('cai loz ma');
+            throw new UnauthorizedException('token is invalid');
           }),
         );
     }
