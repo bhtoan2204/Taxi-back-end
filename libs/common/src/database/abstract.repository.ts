@@ -30,7 +30,7 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
     ).toJSON() as unknown as TDocument;
   }
 
-  async findOne(filterQuery: FilterQuery<TDocument>): Promise<TDocument> {
+  async findOne(filterQuery: FilterQuery<TDocument>) {
     const document = await this.model.findOne(filterQuery, {}, { lean: true });
 
     if (!document) {
@@ -73,9 +73,15 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
     return this.model.find(filterQuery, {}, { lean: true });
   }
 
+  async delete(filterQuery: FilterQuery<TDocument>) {
+    return this.model.deleteOne(filterQuery);
+  }
+
   async startTransaction() {
     const session = await this.connection.startSession();
     session.startTransaction();
     return session;
   }
+  
+
 }

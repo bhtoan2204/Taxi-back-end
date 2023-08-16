@@ -22,12 +22,13 @@ export class AuthService {
 
   ) { }
 
-  async login(user: User, response: Response) {
+  async login(user: User) {
     const { accessToken, refreshToken } = await this.getToken(user._id, user.role, user.phone);
     try {
       await this.refreshTokenRepository.create(
         { 
-          refresh_token: refreshToken 
+          refresh_token: refreshToken,
+          user_id: user._id
         }
       );
       return {
@@ -40,12 +41,14 @@ export class AuthService {
     }
   }
 
-  logout(response: Response) {
-    
+  async logout(user: User) {
+    this.refreshTokenRepository.delete({ user_id: user._id })
   }
 
-  async refresh(user: User, response: Response) {
-
+  async refresh(user: User, request: any) {
+    const { accessToken, refreshToken } = await this.getToken(user._id, user.role, user.phone);
+    await this.refreshTokenRepository.findOneAndUpdate({ refresh_token: request.authentication }, { refresh_token: refreshToken });
+    return { accessToken, refreshToken }
   }
 
   async getToken(userId: any, role: string, phone: string) {
