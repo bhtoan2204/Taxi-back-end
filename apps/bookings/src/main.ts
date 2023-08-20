@@ -1,12 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { BookingsModule } from './bookings.module';
-import { ValidationPipe } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config';
+import { RmqService } from '@app/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(BookingsModule);
-  app.useGlobalPipes(new ValidationPipe());
-  const configService = app.get(ConfigService);
-  await app.listen(configService.get('PORT'));
+  const rmqService = app.get<RmqService>(RmqService);
+  app.connectMicroservice(rmqService.getOptions('BOOKING'))
+  await app.startAllMicroservices();
 }
 bootstrap();

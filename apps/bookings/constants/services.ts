@@ -1,1 +1,1 @@
-export const CUSTOMER_SERVICE = 'CUSTOMER'
+export const BOOKING_SERVICE = 'BOOKING'

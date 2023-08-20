@@ -1,11 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { Response } from 'express';
 import { User } from './users/schemas/users.schema';
-import { UsersRepository } from './users/users.repository';
 import { RefreshTokenRepository } from './refreshToken/refreshToken.repository';
-import { RefreshToken } from './refreshToken/schemas/refreshToken.schema';
 
 export interface TokenPayload {
   userId: string;
@@ -26,7 +23,7 @@ export class AuthService {
     const { accessToken, refreshToken } = await this.getToken(user._id, user.role, user.phone);
     try {
       await this.refreshTokenRepository.create(
-        { 
+        {
           refresh_token: refreshToken,
           user_id: user._id
         }
@@ -45,9 +42,20 @@ export class AuthService {
     this.refreshTokenRepository.delete({ user_id: user._id })
   }
 
-  async refresh(user: User, request: any) {
+  async refresh(user: User, token: any) {
     const { accessToken, refreshToken } = await this.getToken(user._id, user.role, user.phone);
-    await this.refreshTokenRepository.findOneAndUpdate({ refresh_token: request.authentication }, { refresh_token: refreshToken });
+    try {
+      await this.refreshTokenRepository.findOneAndUpdate({ refresh_token: token }, { refresh_token: refreshToken });
+    }
+    catch (err) {
+      if (err == NotFoundException) {
+        this.refreshTokenRepository.delete({ refresh_token: token });
+        throw UnauthorizedException;
+      }
+      else {
+        throw err
+      };
+    }
     return { accessToken, refreshToken }
   }
 

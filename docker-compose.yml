@@ -8,14 +8,11 @@ services:
     env_file:
       - ./apps/bookings/.env
     depends_on:
-      - customer
       - auth
       - rabbitmq
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
-    ports:
-      - '3000:3000'
   
   customer:
     build:
@@ -31,6 +28,8 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+    ports:
+      - '3004:3004'
 
   auth:
     build: 

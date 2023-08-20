@@ -3,7 +3,7 @@ import { BookingsService } from './bookings.service';
 import { CreateBookingRequest } from './dto/create_bookings.request';
 import { JwtAuthGuard } from '@app/common';
 
-@Controller('bookings')
+@Controller()
 export class BookingsController {
   constructor(private readonly bookingsService: BookingsService) {}
 
@@ -18,5 +18,4 @@ export class BookingsController {
     console.log(req.user)
     return this.bookingsService.createBooking(request)
   }
-  
 }

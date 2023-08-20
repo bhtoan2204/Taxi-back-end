@@ -2,24 +2,25 @@ import { Module } from '@nestjs/common';
 import { AdminController } from './admin.controller';
 import { AdminService } from './admin.service';
 import { ConfigModule } from '@nestjs/config';
-import Joi from 'joi';
+import * as Joi from 'joi';
 import { AuthModule, DatabaseModule, RmqModule } from '@app/common';
-import { ADMIN_SERVICE } from '../constants/services';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      validationSchema: Joi.object({
-        MONGODB_URI: Joi.string().required(),
-        PORT: Joi.number().required(),
-      }),
-      envFilePath: './apps/admin/.env'
-    }),
+    ConfigModule.forRoot(
+      {
+        isGlobal: true,
+        validationSchema: Joi.object({
+          MONGODB_URI: Joi.string().required(),
+          PORT: Joi.number().required(),
+        }),
+        envFilePath: './apps/admin/.env'
+      }
+    ),
     DatabaseModule,
-    RmqModule.register({
-      name: ADMIN_SERVICE,
-    }),
+    MongooseModule,
+    RmqModule,
     AuthModule],
   controllers: [AdminController],
   providers: [AdminService],

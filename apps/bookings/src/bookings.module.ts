@@ -6,8 +6,6 @@ import { DatabaseModule, RmqModule, AuthModule } from '@app/common';
 import { BookingRepository } from './booking.repository';
 import { MongooseModule } from '@nestjs/mongoose';
 import * as Joi from 'joi'
-import { Booking, BookingSchema } from './schemas/booking.schema';
-import { CUSTOMER_SERVICE } from '../constants/services';
 
 @Module({
   imports: [
@@ -15,16 +13,14 @@ import { CUSTOMER_SERVICE } from '../constants/services';
       {
         isGlobal: true,
         validationSchema: Joi.object({
-          MONGODB_URI: Joi.string().required(),
-          PORT: Joi.number().required(),
+          RABBIT_MQ_URI: Joi.string().required(),
+          RABBIT_MQ_CUSTOMER_QUEUE: Joi.number().required(),
         }),
         envFilePath: './apps/bookings/.env'
       }),
     DatabaseModule,
-    MongooseModule.forFeature([{ name: Booking.name, schema: BookingSchema }]),
-    RmqModule.register({
-      name: CUSTOMER_SERVICE,
-    }),
+    MongooseModule,
+    RmqModule,
     AuthModule
   ],
 

@@ -63,6 +63,33 @@
       "compilerOptions": {
         "tsConfigPath": "apps/driver/tsconfig.app.json"
       }
+    },
+    "customer-info-receiver": {
+      "type": "application",
+      "root": "apps/customer-info-receiver",
+      "entryFile": "main",
+      "sourceRoot": "apps/customer-info-receiver/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/customer-info-receiver/tsconfig.app.json"
+      }
+    },
+    "driver-status-tracker": {
+      "type": "application",
+      "root": "apps/driver-status-tracker",
+      "entryFile": "main",
+      "sourceRoot": "apps/driver-status-tracker/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/driver-status-tracker/tsconfig.app.json"
+      }
+    },
+    "customer-address-positioning": {
+      "type": "application",
+      "root": "apps/customer-address-positioning",
+      "entryFile": "main",
+      "sourceRoot": "apps/customer-address-positioning/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/customer-address-positioning/tsconfig.app.json"
+      }
     }
   }
 }
