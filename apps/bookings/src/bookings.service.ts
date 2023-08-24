@@ -8,8 +8,7 @@ import { lastValueFrom } from 'rxjs';
 @Injectable()
 export class BookingsService {
   constructor(
-    private readonly bookingsRepository: BookingRepository,
-    @Inject(BOOKING_SERVICE) private bookingClient: ClientProxy) { }
+    private readonly bookingsRepository: BookingRepository) { }
 
   async getBookings() {
     return await this.bookingsRepository.find({});

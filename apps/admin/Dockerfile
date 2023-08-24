@@ -8,7 +8,7 @@ RUN yarn install
 
 COPY . .
 
-RUN yarn run build bookings
+RUN yarn run build admin
 
 FROM node:alpine as production
 
@@ -25,4 +25,4 @@ COPY . .
 
 COPY --from=development /usr/src/app/dist ./dist
 
-CMD ["node", "dist/apps/bookings/main"]
+CMD ["node", "dist/apps/admin/main"]

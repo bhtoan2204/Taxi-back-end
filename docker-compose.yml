@@ -31,6 +31,51 @@ services:
     ports:
       - '3004:3004'
 
+  customer-info-receiver:
+    build:
+      context: .
+      dockerfile: ./apps/customer-info-receiver/Dockerfile
+      target: development
+    command: yarn run start:dev customer-info-receiver
+    depends_on:
+      - rabbitmq
+      - auth
+    env_file:
+      - ./apps/customer-info-receiver/.env
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+  
+  driver-status-tracker:
+    build:
+      context: .
+      dockerfile: ./apps/driver-status-tracker/Dockerfile
+      target: development
+    command: yarn run start:dev driver-status-tracker
+    depends_on:
+      - rabbitmq
+      - auth
+    env_file:
+      - ./apps/driver-status-tracker/.env
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+  customer-address-positioning:
+    build:
+      context: .
+      dockerfile: ./apps/customer-address-positioning/Dockerfile
+      target: development
+    command: yarn run start:dev customer-address-positioning
+    depends_on:
+      - rabbitmq
+      - auth
+    env_file:
+      - ./apps/customer-address-positioning/.env
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
   auth:
     build: 
       context: .
@@ -46,6 +91,40 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+
+  admin:
+    build:
+      context: .
+      dockerfile: ./apps/admin/Dockerfile
+      target: development
+    command: yarn run start:dev admin
+    env_file:
+      - ./apps/admin/.env
+    depends_on:
+      - auth
+      - rabbitmq
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3002:3002'
+  
+  driver:
+    build:
+      context: .
+      dockerfile: ./apps/driver/Dockerfile
+      target: development
+    command: yarn run start:dev driver
+    env_file:
+      - ./apps/bookings/.env
+    depends_on:
+      - auth
+      - rabbitmq
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3003:3003'
 
   rabbitmq:
     image: rabbitmq

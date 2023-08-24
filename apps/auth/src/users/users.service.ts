@@ -7,6 +7,7 @@ import * as bcrypt from 'bcrypt';
 import { UsersRepository } from './users.repository';
 import { CreateUserRequest } from './dto/create-user.request';
 import { User } from './schemas/users.schema';
+import { Role } from '@app/common';
 
 @Injectable()
 export class UsersService {
@@ -34,11 +35,15 @@ export class UsersService {
         }
     }
 
-    async validateUser(phone: string, password: string) {
+    async validateUser(phone: string, password: string, role: Role) {
         const user = await this.usersRepository.findOne({ phone });
         const passwordIsValid = await bcrypt.compare(password, user.password);
+        const roleIsValid = await (role === user.role);
         if (!passwordIsValid) {
             throw new UnauthorizedException('Credentials are not valid.');
+        }
+        else if (!roleIsValid) {
+            throw new UnauthorizedException('Role is not valid')
         }
         return user;
     }

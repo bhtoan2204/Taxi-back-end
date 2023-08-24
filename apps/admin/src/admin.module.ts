@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { AuthModule, DatabaseModule, RmqModule } from '@app/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { RECEIVER_SERVICE, LOCATE_SERVICE, TRACKER_SERVICE } from '../constants/services';
 
 @Module({
   imports: [
@@ -20,7 +21,15 @@ import { MongooseModule } from '@nestjs/mongoose';
     ),
     DatabaseModule,
     MongooseModule,
-    RmqModule,
+    RmqModule.register({
+      name: RECEIVER_SERVICE
+    }),
+    RmqModule.register({
+      name: LOCATE_SERVICE
+    }),
+    RmqModule.register({
+      name: TRACKER_SERVICE
+    }),
     AuthModule],
   controllers: [AdminController],
   providers: [AdminService],

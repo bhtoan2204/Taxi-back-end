@@ -8,7 +8,7 @@ RUN yarn install
 
 COPY . .
 
-RUN yarn run build 
+RUN yarn run build customer
 
 FROM node:alpine as production
 
