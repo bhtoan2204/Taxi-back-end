@@ -15,7 +15,7 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
   constructor(
     protected readonly model: Model<TDocument>,
     private readonly connection: Connection,
-  ) {}
+  ) { }
 
   async create(
     document: Omit<TDocument, '_id'>,
@@ -69,8 +69,13 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
     });
   }
 
-  async find(filterQuery: FilterQuery<TDocument>) {
-    return this.model.find(filterQuery, {}, { lean: true });
+  async find(filterQuery: FilterQuery<TDocument>, sortOptions?: any) {
+    const query = this.model.find(filterQuery, {}, { lean: true });
+    if (sortOptions) {
+      query.sort(sortOptions)
+    }
+
+    return query
   }
 
   async delete(filterQuery: FilterQuery<TDocument>) {
@@ -82,6 +87,6 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
     session.startTransaction();
     return session;
   }
-  
+
 
 }

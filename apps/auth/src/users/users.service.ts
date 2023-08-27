@@ -38,13 +38,13 @@ export class UsersService {
     async validateUser(phone: string, password: string, role: Role) {
         const user = await this.usersRepository.findOne({ phone });
         const passwordIsValid = await bcrypt.compare(password, user.password);
-        const roleIsValid = await (role === user.role);
+        //const roleIsValid = await (role === user.role);
         if (!passwordIsValid) {
             throw new UnauthorizedException('Credentials are not valid.');
         }
-        else if (!roleIsValid) {
-            throw new UnauthorizedException('Role is not valid')
-        }
+        // else if (!roleIsValid) {
+        //     throw new UnauthorizedException('Role is not valid')
+        // }
         return user;
     }
 

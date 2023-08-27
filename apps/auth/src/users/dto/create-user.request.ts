@@ -1,5 +1,5 @@
+import { Role } from '@app/common';
 import { IsNotEmpty, IsPhoneNumber, IsString } from 'class-validator';
-import { Role } from '../enums/role.enums';
 
 export class CreateUserRequest {
   @IsPhoneNumber()

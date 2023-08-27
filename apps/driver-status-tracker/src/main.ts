@@ -5,7 +5,7 @@ import { RmqService } from '@app/common';
 async function bootstrap() {
   const app = await NestFactory.create(DriverStatusTrackerModule);
   const rmqService = app.get<RmqService>(RmqService);
-  app.connectMicroservice(rmqService.getOptions('LOCATE'));
+  app.connectMicroservice(rmqService.getOptions('TRACKER'));
   await app.startAllMicroservices();
 }
 bootstrap();

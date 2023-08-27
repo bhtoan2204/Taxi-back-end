@@ -3,6 +3,7 @@ import { AdminService } from './admin.service';
 import { JwtAuthGuard } from '@app/common';
 import { CustomerReceiver } from '../dto/getLocation.request';
 import { Request } from 'express';
+import { CreateTracker } from '../dto/createTracker.request';
 
 @Controller()
 export class AdminController {
@@ -32,6 +33,12 @@ export class AdminController {
   @Get('call_tracker')
   async testConnect3(){
     return await this.adminService.callTracker();
+  }
+
+  @Post('createTracker')
+  @UseGuards(JwtAuthGuard)
+  async createTracker(@Body() dto: CreateTracker, @Req() request: Request){
+    return await this.adminService.createTracker(dto);
   }
 
 }

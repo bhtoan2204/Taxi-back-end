@@ -22,12 +22,17 @@ export class AuthService {
   async login(user: User) {
     const { accessToken, refreshToken } = await this.getToken(user._id, user.role, user.phone);
     try {
-      await this.refreshTokenRepository.create(
-        {
-          refresh_token: refreshToken,
-          user_id: user._id
-        }
-      );
+      try {
+        await this.refreshTokenRepository.findOneAndUpdate({ user_id: user._id }, { refresh_token: refreshToken })
+      }
+      catch (e) {
+        await this.refreshTokenRepository.create(
+          {
+            refresh_token: refreshToken,
+            user_id: user._id
+          }
+        );
+      }
       return {
         accessToken,
         refreshToken
@@ -68,7 +73,7 @@ export class AuthService {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(jwtPayload, {
         secret: this.configService.get<string>('JWT_SECRET'),
-        expiresIn: '5m'
+        expiresIn: '15m'
       }),
       this.jwtService.signAsync(jwtPayload, {
         secret: this.configService.get<string>('JWT_SECRET_REFRESH'),

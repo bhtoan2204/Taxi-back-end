@@ -16,3 +16,10 @@ export enum CarType {
     BIKE = "BIKE",
     CAR = "CAR"
 }
+
+export enum Status {
+    PENDING = "PENDING",
+    CONFIRM = "CONFIRM",
+    INPROGRESS = "INPROGRESS",
+    COMPLETED = "COMPLETED"
+}
