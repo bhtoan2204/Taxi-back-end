@@ -12,11 +12,11 @@ import JwtRefreshGuard from './guards/jwt-refresh.guard';
 export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
-    @UseGuards(LocalAuthGuard)
-    @Post('login')
-    async login(@Req() request) {
-      return await this.authService.login(request.user);
-    }
+  @UseGuards(LocalAuthGuard)
+  @Post('login')
+  async login(@Req() request) {
+    return await this.authService.login(request.user);
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post('logout')

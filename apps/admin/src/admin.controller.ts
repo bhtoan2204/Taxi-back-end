@@ -2,12 +2,16 @@ import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common
 import { AdminService } from './admin.service';
 import { JwtAuthGuard } from '@app/common';
 import { CustomerReceiver } from '../dto/getLocation.request';
-import { Request, Response } from 'express';
+import { Request } from 'express';
 import { CreateTracker } from '../dto/createTracker.request';
+import { CreateTrackerDTO } from '../dto/createTracker.dto';
 
 @Controller()
 export class AdminController {
-  constructor(private readonly adminService: AdminService) { }
+  constructor(
+    private readonly adminService: AdminService,
+
+    ) { }
 
   @Get()
   getHello(): string {
@@ -37,17 +41,16 @@ export class AdminController {
 
   @Post('createTracker')
   @UseGuards(JwtAuthGuard)
-  async createTracker(@Body() dto: any, @Req() request: Request) {
+  async createTracker(@Body() dto: CreateTrackerDTO, @Req() request: Request) {
     const newTracker = new CreateTracker();
     newTracker.customer_id = dto.customer_id;
     newTracker.driver_id = dto.driver_id;
     newTracker.pickup_location = dto.pickup_location;
     newTracker.destination_location = dto.destination_location;
     newTracker.status = dto.status;
-    newTracker.start_date = new Date(dto.start_date);
-    newTracker.end_date = new Date(dto.end_date);
+    newTracker.start_date = new Date();
+    newTracker.end_date = new Date();
     const tracker = await this.adminService.createTracker(newTracker);
-    console.log(tracker);
     return tracker;
   }
 
@@ -55,5 +58,12 @@ export class AdminController {
   @UseGuards(JwtAuthGuard)
   async getTracker(@Req() request: Request) {
     
+  }
+
+  @Get('getBookingRequest')
+  @UseGuards(JwtAuthGuard)
+  async getBookingRequest() {
+    const bookingRequests = await this.adminService.getAllBookingRequests();
+    return bookingRequests;
   }
 }

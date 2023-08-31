@@ -5,7 +5,9 @@ import { AuthModule, DatabaseModule, RmqModule } from '@app/common';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi'
 import { MongooseModule } from '@nestjs/mongoose';
-import { BOOKING_SERVICE } from '../constants/services';
+import { BOOKING_SERVICE } from './constants/services';
+import { BookingRequestRepository } from './repositories/bookingRequest.repository';
+import { BookingRequest, BookingRequestSchema } from './schema/bookingRequest.schema';
 
 @Module({
   imports: [
@@ -19,13 +21,15 @@ import { BOOKING_SERVICE } from '../constants/services';
         envFilePath: './apps/customer/.env'
       }
     ),
-    MongooseModule,
+    MongooseModule.forFeature([{ name: BookingRequest.name, schema: BookingRequestSchema }]),
     DatabaseModule,
     RmqModule.register({
       name: BOOKING_SERVICE
     }),
     AuthModule],
   controllers: [CustomerController],
-  providers: [CustomerService],
+  providers: [
+    CustomerService,
+    BookingRequestRepository],
 })
 export class CustomerModule { }

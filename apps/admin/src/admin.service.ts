@@ -47,11 +47,21 @@ export class AdminService {
 
   async createTracker(dto: CreateTracker) {
     try {
-      const checkToken = this.trackerClient.send('create_tracker', {dto});
-      const tracker =  await lastValueFrom(checkToken);
-      console.log(tracker);
+      const check = this.trackerClient.send('create_tracker', { dto });
+      const tracker = await lastValueFrom(check);
       return tracker;
     } catch (e) {
+      throw e;
+    }
+  }
+
+  async getAllBookingRequests(){
+    try{
+      const check = this.receiverClient.send('get_booking_request', {});
+      const requests = await lastValueFrom(check);
+      return requests;
+    } 
+    catch (e) {
       throw e;
     }
   }

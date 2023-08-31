@@ -5,7 +5,7 @@ import { StatusTrackerRepository } from './repositories/statusTracker.repository
 export class DriverStatusTrackerService {
   constructor(
     private readonly statusTrackerRepository: StatusTrackerRepository,
-    ) { }
+  ) { }
 
   getHello(): string {
     return 'Hello World!';
@@ -26,7 +26,7 @@ export class DriverStatusTrackerService {
   async createTrackerInRepository(data: any) {
     const session = await this.statusTrackerRepository.startTransaction();
     try {
-      const tracker = await this.statusTrackerRepository.create(data.dto, { session });
+      const tracker = await this.statusTrackerRepository.create(data, { session });
       await session.commitTransaction();
       return tracker;
     }

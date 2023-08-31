@@ -20,4 +20,11 @@ export class CustomerInfoReceiverController {
     this.customerInfoReceiverService.getMessage(data);
     this.rmqService.ack(context);
   }
+
+  @EventPattern('get_booking_request')
+  async getAllBookingRequest(@Ctx() context: RmqContext) {
+    const result = this.customerInfoReceiverService.getAllBookingRequest();
+    this.rmqService.ack(context);
+    return result;
+  }
 }
