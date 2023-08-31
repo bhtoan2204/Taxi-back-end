@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { User } from './users/schemas/users.schema';
 import { RefreshTokenRepository } from './refreshToken/refreshToken.repository';
+import { UsersService } from './users/users.service';
 
 export interface TokenPayload {
   userId: string;
@@ -15,7 +16,8 @@ export class AuthService {
   constructor(
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
-    private readonly refreshTokenRepository: RefreshTokenRepository
+    private readonly refreshTokenRepository: RefreshTokenRepository,
+    private readonly userService: UsersService
 
   ) { }
 
@@ -48,7 +50,8 @@ export class AuthService {
   }
 
   async refresh(user: User, token: any) {
-    const { accessToken, refreshToken } = await this.getToken(user._id, user.role, user.phone);
+    const refreshUser = await this.userService.getUserToRefresh(user.phone);
+    const { accessToken, refreshToken } = await this.getToken(refreshUser._id, refreshUser.role, refreshUser.phone);
     try {
       await this.refreshTokenRepository.findOneAndUpdate({ refresh_token: token }, { refresh_token: refreshToken });
     }
@@ -68,8 +71,6 @@ export class AuthService {
     const jwtPayload: TokenPayload = {
       userId, role, phone
     };
-
-
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(jwtPayload, {
         secret: this.configService.get<string>('JWT_SECRET'),

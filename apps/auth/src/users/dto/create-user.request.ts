@@ -9,6 +9,11 @@ export class CreateUserRequest {
   @IsNotEmpty()
   password: string;
 
+  @IsString()
   @IsNotEmpty()
-  role: Role
+  full_name: string;
+  
+  @IsNotEmpty()
+  role: string
+
 }

@@ -17,7 +17,6 @@ export class AdminService {
   }
   async callReceiver() {
     try {
-      console.log('service of admin')
       const message = "adu";
       await lastValueFrom(this.receiverClient.emit('call_receiver', { message }));
     }
@@ -28,7 +27,6 @@ export class AdminService {
 
   async callLocate() {
     try {
-      console.log('service of admin')
       const message = "adu";
       await lastValueFrom(this.locateClient.emit('call_locate', { message }));
     }
@@ -39,7 +37,6 @@ export class AdminService {
 
   async callTracker() {
     try {
-      console.log('service of admin')
       const message = "adu";
       await lastValueFrom(this.trackerClient.emit('call_tracker', { message }));
     }
@@ -50,9 +47,11 @@ export class AdminService {
 
   async createTracker(dto: CreateTracker) {
     try {
-      return await lastValueFrom(this.trackerClient.emit('create_tracker', { dto }));
-    }
-    catch (e) {
+      const checkToken = this.trackerClient.send('create_tracker', {dto});
+      const tracker =  await lastValueFrom(checkToken);
+      console.log(tracker);
+      return tracker;
+    } catch (e) {
       throw e;
     }
   }

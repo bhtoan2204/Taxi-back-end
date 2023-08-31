@@ -12,6 +12,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { RefreshToken, RefreshTokenSchema } from './refreshToken/schemas/refreshToken.schema';
 import { RefreshTokenRepository } from './refreshToken/refreshToken.repository';
 import { RefreshStrategy } from './strategies/refresh.strategy';
+import { UsersService } from './users/users.service';
+import { UsersRepository } from './users/users.repository';
 
 @Module({
   imports: [

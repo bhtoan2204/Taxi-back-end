@@ -23,10 +23,10 @@ export class DriverStatusTrackerService {
     return trackers;
   }
 
-  async createTracker(data: any) {
+  async createTrackerInRepository(data: any) {
     const session = await this.statusTrackerRepository.startTransaction();
     try {
-      const tracker = await this.statusTrackerRepository.create(data, { session });
+      const tracker = await this.statusTrackerRepository.create(data.dto, { session });
       await session.commitTransaction();
       return tracker;
     }

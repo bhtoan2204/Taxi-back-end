@@ -22,10 +22,11 @@ export class DriverStatusTrackerController {
   }
 
   @EventPattern('create_tracker')
-  async createTracker(@Payload() data: any, @Ctx() context: RmqContext){
-    console.log('tracker service');
-    this.driverStatusTrackerService.createTracker(data);
+  async handleCreateTrackerEvent(@Payload() data: any, @Ctx() context: RmqContext) {
+    const tracker = await this.driverStatusTrackerService.createTrackerInRepository(data.dto);
+    console.log(tracker);
     this.rmqService.ack(context);
+    return tracker;
   }
 
   @EventPattern('get_all_tracker')
