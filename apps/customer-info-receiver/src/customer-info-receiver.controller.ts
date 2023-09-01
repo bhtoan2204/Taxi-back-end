@@ -27,4 +27,11 @@ export class CustomerInfoReceiverController {
     this.rmqService.ack(context);
     return result;
   }
+
+  @EventPattern('search_booking_request')
+  async elasticSearchBookingRequest(@Payload() data: any, @Ctx() context: RmqContext){
+    const result = this.customerInfoReceiverService.searchBookingRequest(data.dto);
+    this.rmqService.ack(context);
+    return result;
+  }
 }

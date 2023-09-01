@@ -1,19 +1,4 @@
-services:
-  bookings:
-    build:
-      context: .
-      dockerfile: ./apps/bookings/Dockerfile
-      target: development
-    command: yarn run start:dev bookings
-    env_file:
-      - ./apps/bookings/.env
-    depends_on:
-      - auth
-      - rabbitmq
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-  
+services:  
   customer:
     build:
       context: .
@@ -116,7 +101,7 @@ services:
       target: development
     command: yarn run start:dev driver
     env_file:
-      - ./apps/bookings/.env
+      - ./apps/driver/.env
     depends_on:
       - auth
       - rabbitmq
@@ -130,4 +115,12 @@ services:
     image: rabbitmq
     ports:
       - '5672:5672'
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.2
+    container_name: elasticsearch
+    ports:
+      - '9200:9200'
+    environment:
+      - discovery.type=single-node
   

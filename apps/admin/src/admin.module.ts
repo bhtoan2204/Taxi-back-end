@@ -5,7 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { AuthModule, DatabaseModule, RmqModule } from '@app/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { RECEIVER_SERVICE, LOCATE_SERVICE, TRACKER_SERVICE } from '../constants/services';
+import { RECEIVER_SERVICE, LOCATE_SERVICE, TRACKER_SERVICE } from './constants/services';
 
 @Module({
   imports: [

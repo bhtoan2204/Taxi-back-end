@@ -1,8 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { LOCATE_SERVICE, RECEIVER_SERVICE, TRACKER_SERVICE } from '../constants/services';
+import { LOCATE_SERVICE, RECEIVER_SERVICE, TRACKER_SERVICE } from './constants/services';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
-import { CreateTracker } from '../dto/createTracker.request';
+import { CreateTracker } from './dto/createTracker.request';
+import { SearchBookingRequest } from './dto/searchBookingRequest.dto';
 
 @Injectable()
 export class AdminService {
@@ -55,12 +56,23 @@ export class AdminService {
     }
   }
 
-  async getAllBookingRequests(){
-    try{
+  async getAllBookingRequests() {
+    try {
       const check = this.receiverClient.send('get_booking_request', {});
       const requests = await lastValueFrom(check);
       return requests;
-    } 
+    }
+    catch (e) {
+      throw e;
+    }
+  }
+
+  async searchBookingRequest(dto: SearchBookingRequest) {
+    try {
+      const check = this.receiverClient.send('search_booking_request', { dto });
+      const requests = await lastValueFrom(check);
+      return requests;
+    }
     catch (e) {
       throw e;
     }

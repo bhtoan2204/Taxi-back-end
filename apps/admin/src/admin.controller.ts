@@ -1,10 +1,11 @@
 import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { JwtAuthGuard } from '@app/common';
-import { CustomerReceiver } from '../dto/getLocation.request';
 import { Request } from 'express';
-import { CreateTracker } from '../dto/createTracker.request';
-import { CreateTrackerDTO } from '../dto/createTracker.dto';
+import { CustomerReceiver } from './dto/getLocation.request';
+import { CreateTrackerDTO } from './dto/createTracker.dto';
+import { CreateTracker } from './dto/createTracker.request';
+import { SearchBookingRequest } from './dto/searchBookingRequest.dto';
 
 @Controller()
 export class AdminController {
@@ -64,6 +65,12 @@ export class AdminController {
   @UseGuards(JwtAuthGuard)
   async getBookingRequest() {
     const bookingRequests = await this.adminService.getAllBookingRequests();
+    return bookingRequests;
+  }
+
+  @Post('searchBookingRequest')
+  async searchBookingRequest(@Body() dto: SearchBookingRequest) {
+    const bookingRequests = await this.adminService.searchBookingRequest(dto);
     return bookingRequests;
   }
 }

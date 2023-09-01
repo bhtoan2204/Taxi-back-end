@@ -7,6 +7,7 @@ import { AuthModule, DatabaseModule, RmqModule } from '@app/common';
 import { BookingRequest, BookingRequestSchema } from 'apps/customer-info-receiver/src/schema/bookingRequest.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 import { BookingRequestRepository } from '../src/repositories/bookingRequest.repository';
+import { ElasticsearchModule } from '@nestjs/elasticsearch';
 
 @Module({
   imports: [
@@ -22,7 +23,10 @@ import { BookingRequestRepository } from '../src/repositories/bookingRequest.rep
     RmqModule,
     AuthModule,
     DatabaseModule,
-    MongooseModule.forFeature([{name: BookingRequest.name, schema: BookingRequestSchema}])
+    MongooseModule.forFeature([{name: BookingRequest.name, schema: BookingRequestSchema}]),
+    ElasticsearchModule.register({
+      node: 'http://localhost:9200'
+    })
   ],
   controllers: [CustomerInfoReceiverController],
   providers: [

@@ -16,12 +16,12 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   // SWAGGER CONFIG
-  const configSwagger = new DocumentBuilder()
-    .setTitle('Authentication')
-    .setDescription('Authentication API')
-    .setVersion('1.0')
-    .addTag('taxi')
-    .build()
+  // const configSwagger = new DocumentBuilder()
+  //   .setTitle('Authentication')
+  //   .setDescription('Authentication API')
+  //   .setVersion('1.0')
+  //   .addTag('taxi')
+  //   .build()
   
 
   await app.startAllMicroservices();
