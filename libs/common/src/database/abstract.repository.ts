@@ -74,7 +74,6 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
     if (sortOptions) {
       query.sort(sortOptions)
     }
-
     return query
   }
 

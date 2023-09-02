@@ -30,7 +30,14 @@ export class CustomerInfoReceiverController {
 
   @EventPattern('search_booking_request')
   async elasticSearchBookingRequest(@Payload() data: any, @Ctx() context: RmqContext){
-    const result = this.customerInfoReceiverService.searchBookingRequest(data.dto);
+    const result = this.customerInfoReceiverService.searchBookingRequest(data.text, data.offset, data.limit, data.startId);
+    this.rmqService.ack(context);
+    return result;
+  }
+
+  @EventPattern('get_booking_request_paginate')
+  async getBookingRequest(@Payload() data: any, @Ctx() context: RmqContext){
+    const result = this.customerInfoReceiverService.getBookingRequest(data.offset, data.limit, data.startId);
     this.rmqService.ack(context);
     return result;
   }

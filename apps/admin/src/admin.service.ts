@@ -3,7 +3,6 @@ import { LOCATE_SERVICE, RECEIVER_SERVICE, TRACKER_SERVICE } from './constants/s
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { CreateTracker } from './dto/createTracker.request';
-import { SearchBookingRequest } from './dto/searchBookingRequest.dto';
 
 @Injectable()
 export class AdminService {
@@ -67,9 +66,9 @@ export class AdminService {
     }
   }
 
-  async searchBookingRequest(dto: SearchBookingRequest) {
+  async searchForBookingRequest(text: string, offset?: number, limit?: number, startId?: number,) {
     try {
-      const check = this.receiverClient.send('search_booking_request', { dto });
+      const check = this.receiverClient.send('search_booking_request', { text, offset, limit, startId });
       const requests = await lastValueFrom(check);
       return requests;
     }
@@ -77,4 +76,11 @@ export class AdminService {
       throw e;
     }
   }
+
+  async getBookingRequest(offset?: number, limit?: number, startId?: number) {
+    const check = this.receiverClient.send('get_booking_request_paginate', {offset, limit, startId });
+    const requests = await lastValueFrom(check);
+    return requests;
+  }
+
 }

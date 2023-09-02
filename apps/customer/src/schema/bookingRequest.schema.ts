@@ -7,6 +7,9 @@ export class BookingRequest extends AbstractDocument {
     customer_id: string;
 
     @Prop()
+    phone: string
+
+    @Prop()
     booking_time: Date;
 
     @Prop()
@@ -38,12 +41,6 @@ export class BookingRequest extends AbstractDocument {
 
     @Prop()
     duration: number;
-
-    @Prop()
-    s2e_coords: [number, number][];
-
-    @Prop()
-    d2s_coords: [number, number][];
 }
 
 export const BookingRequestSchema = SchemaFactory.createForClass(BookingRequest);

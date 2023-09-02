@@ -1,11 +1,11 @@
-import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res, UseGuards, Query } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { JwtAuthGuard } from '@app/common';
 import { Request } from 'express';
 import { CustomerReceiver } from './dto/getLocation.request';
 import { CreateTrackerDTO } from './dto/createTracker.dto';
 import { CreateTracker } from './dto/createTracker.request';
-import { SearchBookingRequest } from './dto/searchBookingRequest.dto';
+import PaginationParamsDto from './dto/paginationParams.dto';
 
 @Controller()
 export class AdminController {
@@ -68,9 +68,17 @@ export class AdminController {
     return bookingRequests;
   }
 
-  @Post('searchBookingRequest')
-  async searchBookingRequest(@Body() dto: SearchBookingRequest) {
-    const bookingRequests = await this.adminService.searchBookingRequest(dto);
-    return bookingRequests;
+  @Get('search-booking-request')
+  async searchBookingRequest(
+    @Query('search') search: string,
+    @Query() query: PaginationParamsDto,
+  ) {
+    const { limit, offset, startId } = query;
+
+    if (search) {
+      return this.adminService.searchForBookingRequest(search, offset, limit, startId);
+    }
+
+    return this.adminService.getBookingRequest(offset, limit, startId);
   }
 }

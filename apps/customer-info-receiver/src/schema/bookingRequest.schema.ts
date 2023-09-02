@@ -7,6 +7,9 @@ export class BookingRequest extends AbstractDocument {
     customer_id: string;
 
     @Prop()
+    phone: string
+
+    @Prop()
     booking_time: Date;
 
     @Prop()

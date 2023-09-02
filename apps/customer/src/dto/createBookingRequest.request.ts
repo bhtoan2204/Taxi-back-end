@@ -1,11 +1,13 @@
-import { IsString, IsNumber, IsDate, IsArray, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsString, IsNumber, IsDate, IsPhoneNumber, IsDateString } from 'class-validator';
 
 export class CreateBookingRequest {
     @IsString()
     customer_id: string;
 
-    @IsDate()
+    @IsPhoneNumber()
+    phone: string
+
+    @IsDateString()
     booking_time: Date;
 
     @IsNumber()
@@ -37,14 +39,4 @@ export class CreateBookingRequest {
 
     @IsNumber()
     duration: number;
-
-    @IsArray()
-    @ValidateNested({ each: true })
-    @Type(() => Array)
-    s2e_coords: [number, number][];
-
-    @IsArray()
-    @ValidateNested({ each: true })
-    @Type(() => Array)
-    d2s_coords: [number, number][];
 }
