@@ -1,7 +1,5 @@
-import { Types } from "mongoose";
-
 interface BookingRequestBody {
-    _id: Types.ObjectId;
+    id: string;
     phone: string;
     pickup_address: string;
     dropoff_address: string;

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { BookingRequestRepository } from 'apps/customer-info-receiver/src/repositories/bookingRequest.repository';
-import SearchService from './other_services/search.service';
+import SearchService from '../../../libs/common/src/elasticsearch/search.service';
 
 
 @Injectable()
@@ -31,12 +31,8 @@ export class CustomerInfoReceiverService {
         limit,
         startId,
       );
-      const ids = results.map((result) => result._id);
-
-      console.log(ids);
-
-      console.log(results);
-
+      const ids = results.map((result) => result.id);
+      
       if (!ids.length) {
         return {
           items: [],

@@ -55,12 +55,6 @@ export class AdminController {
     return tracker;
   }
 
-  @Get('getTracker')
-  @UseGuards(JwtAuthGuard)
-  async getTracker(@Req() request: Request) {
-    
-  }
-
   @Get('getBookingRequest')
   @UseGuards(JwtAuthGuard)
   async getBookingRequest() {
@@ -69,6 +63,7 @@ export class AdminController {
   }
 
   @Get('search-booking-request')
+  @UseGuards(JwtAuthGuard)
   async searchBookingRequest(
     @Query('search') search: string,
     @Query() query: PaginationParamsDto,

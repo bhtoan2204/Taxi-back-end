@@ -8,7 +8,7 @@ import { BookingRequest, BookingRequestSchema } from 'apps/customer-info-receive
 import { MongooseModule } from '@nestjs/mongoose';
 import { BookingRequestRepository } from '../src/repositories/bookingRequest.repository';
 import { ElasticsearchModule } from '@nestjs/elasticsearch';
-import SearchService from './other_services/search.service';
+import SearchService from '../../../libs/common/src/elasticsearch/search.service';
 
 @Module({
   imports: [

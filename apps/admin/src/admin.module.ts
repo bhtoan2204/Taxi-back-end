@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AdminController } from './admin.controller';
 import { AdminService } from './admin.service';
 import { ConfigModule } from '@nestjs/config';
@@ -6,6 +6,7 @@ import * as Joi from 'joi';
 import { AuthModule, DatabaseModule, RmqModule } from '@app/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { RECEIVER_SERVICE, LOCATE_SERVICE, TRACKER_SERVICE } from './constants/services';
+import { AdminMiddleware } from './admin.middleware';
 
 @Module({
   imports: [
@@ -34,4 +35,8 @@ import { RECEIVER_SERVICE, LOCATE_SERVICE, TRACKER_SERVICE } from './constants/s
   controllers: [AdminController],
   providers: [AdminService],
 })
-export class AdminModule { }
+export class AdminModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AdminMiddleware).forRoutes(AdminController);
+  }
+}

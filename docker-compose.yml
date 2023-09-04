@@ -6,7 +6,6 @@ services:
       target: development
     command: yarn run start:dev customer
     depends_on:
-      - rabbitmq
       - auth
     env_file:
       - ./apps/customer/.env
@@ -23,7 +22,6 @@ services:
       target: development
     command: yarn run start:dev customer-info-receiver
     depends_on:
-      - rabbitmq
       - auth
     env_file:
       - ./apps/customer-info-receiver/.env
@@ -38,7 +36,6 @@ services:
       target: development
     command: yarn run start:dev driver-status-tracker
     depends_on:
-      - rabbitmq
       - auth
     env_file:
       - ./apps/driver-status-tracker/.env
@@ -53,7 +50,6 @@ services:
       target: development
     command: yarn run start:dev customer-address-positioning
     depends_on:
-      - rabbitmq
       - auth
     env_file:
       - ./apps/customer-address-positioning/.env
@@ -71,8 +67,6 @@ services:
       - '3001:3001'
     env_file:
       - ./apps/auth/.env
-    depends_on:
-      - rabbitmq
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -87,7 +81,6 @@ services:
       - ./apps/admin/.env
     depends_on:
       - auth
-      - rabbitmq
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -104,14 +97,9 @@ services:
       - ./apps/driver/.env
     depends_on:
       - auth
-      - rabbitmq
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     ports:
       - '3003:3003'
 
-  rabbitmq:
-    image: rabbitmq
-    ports:
-      - '5672:5672'

@@ -38,6 +38,7 @@
     "class-validator": "^0.14.0",
     "cookie-parser": "^1.4.6",
     "joi": "^17.9.2",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.4.2",
     "npm-check-updates": "^16.13.2",
     "passport": "^0.6.0",
