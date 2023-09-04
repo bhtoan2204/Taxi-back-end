@@ -7,20 +7,23 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { User } from './users/schemas/users.schema';
 import JwtRefreshGuard from './guards/jwt-refresh.guard';
+import { ApiTags } from '@nestjs/swagger';
+import { LoginFormDTO } from './dto/loginForm.requests';
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Req() request) {
+  async login(@Body() dto: LoginFormDTO, @Req() request) {
     return await this.authService.login(request.user);
   }
 
   @UseGuards(JwtAuthGuard)
   @Post('logout')
-  logout(@CurrentUser() user: User) {
+  async logout(@CurrentUser() user: User) {
     return this.authService.logout(user);
   }
 
