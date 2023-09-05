@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { RmqModule, DatabaseModule } from '@app/common';
-import * as Joi from 'joi';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UsersModule } from './users/users.module';
@@ -12,8 +11,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { RefreshToken, RefreshTokenSchema } from './refreshToken/schemas/refreshToken.schema';
 import { RefreshTokenRepository } from './refreshToken/refreshToken.repository';
 import { RefreshStrategy } from './strategies/refresh.strategy';
-import { UsersService } from './users/users.service';
-import { UsersRepository } from './users/users.repository';
+
+import * as Joi from 'joi';
 
 @Module({
   imports: [

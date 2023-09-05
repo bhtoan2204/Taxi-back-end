@@ -7,7 +7,5 @@ export class CustomerAddressPositioningService {
   }
 
   async getMessage(data: any){
-    console.log('goes here')
-    console.log(data);
   }
 }

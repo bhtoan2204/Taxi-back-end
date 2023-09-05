@@ -102,4 +102,8 @@ services:
       - /usr/src/app/node_modules
     ports:
       - '3003:3003'
-
+      
+  rabbitmq:
+    image: rabbitmq
+    ports:
+      - '5672:5672'

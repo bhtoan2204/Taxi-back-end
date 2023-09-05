@@ -15,8 +15,6 @@ export class CustomerInfoReceiverService {
   }
 
   async getMessage(data: any) {
-    console.log('goes here')
-    console.log(data);
   }
 
   async getAllBookingRequest() {

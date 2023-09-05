@@ -6,7 +6,7 @@ import { CurrentUser } from './current-user.decorator';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { User } from './users/schemas/users.schema';
-import JwtRefreshGuard from './guards/jwt-refresh.guard';
+import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 import { ApiTags } from '@nestjs/swagger';
 import { LoginFormDTO } from './dto/loginForm.requests';
 
@@ -21,18 +21,20 @@ export class AuthController {
     return await this.authService.login(request.user);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtRefreshGuard)
   @Post('logout')
-  async logout(@CurrentUser() user: User) {
+  async logout(@Req() request) {
+    const user = request.user;
+    console.log(user);
     return this.authService.logout(user);
   }
 
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
   async refresh(
-    @CurrentUser() user: User,
-    @Req() request: Request
-  ) {
+    @Req() request) {
+    const user = request.user;
+    console.log(user);
     return this.authService.refresh(user, request.headers.authentication);
   }
 

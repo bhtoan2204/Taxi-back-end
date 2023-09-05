@@ -13,10 +13,10 @@ export class UsersController {
     return this.usersService.createUser(request);
   }
 
-  @Patch('updateLocation')
-  @UseGuards(JwtAuthGuard)
-  async updateLocation(@Req() req, @Body() request: LatLongRequest) {
-    const userId = req.user._id;
-    return this.usersService.updateLatLong(request, userId);
-  }
+  // @Patch('updateLocation')
+  // @UseGuards(JwtAuthGuard)
+  // async updateLocation(@Req() req, @Body() request: LatLongRequest) {
+  //   const userId = req.user._id;
+  //   return this.usersService.updateLatLong(request, userId);
+  // }
 }

@@ -18,7 +18,6 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly refreshTokenRepository: RefreshTokenRepository,
     private readonly userService: UsersService
-
   ) { }
 
   async login(user: User) {
@@ -45,19 +44,18 @@ export class AuthService {
     }
   }
 
-  async logout(user: User) {
-    this.refreshTokenRepository.delete({ user_id: user._id })
+  async logout(user: any) {
+    this.refreshTokenRepository.delete({ user_id: user.userId })
   }
 
-  async refresh(user: User, token: any) {
-    const refreshUser = await this.userService.getUserToRefresh(user.phone);
-    const { accessToken, refreshToken } = await this.getToken(refreshUser._id, refreshUser.role, refreshUser.phone);
+  async refresh(user: any, token: any) {
+    const { accessToken, refreshToken } = await this.getToken(user.userId, user.role, user.phone);
     try {
       await this.refreshTokenRepository.findOneAndUpdate({ refresh_token: token }, { refresh_token: refreshToken });
     }
     catch (err) {
       if (err == NotFoundException) {
-        this.refreshTokenRepository.delete({ refresh_token: token });
+        this.refreshTokenRepository.delete({ user_id: user._id });
         throw UnauthorizedException;
       }
       else {

@@ -9,13 +9,11 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AuthModule);
 
-  // MQ CONFIG
   const rmqService = app.get<RmqService>(RmqService);
   app.connectMicroservice<RmqOptions>(rmqService.getOptions('AUTH', true));
   app.useGlobalPipes(new ValidationPipe());
   const configService = app.get(ConfigService);
-
-  // SWAGGER CONFIG
+  
   const configSwagger = new DocumentBuilder()
     .setTitle('Authentication')
     .setDescription('Authentication API')
