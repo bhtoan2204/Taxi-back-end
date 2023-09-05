@@ -23,7 +23,6 @@ import {
         })
         .pipe(
           tap((res) => {
-            console.log(res)
             this.addUser(res, context);
           }),
           catchError(() => {
@@ -37,7 +36,6 @@ import {
       if (context.getType() === 'rpc') {
         authentication = context.switchToRpc().getData().Authentication;
       } else if (context.getType() === 'http') {
-        console.log(context.switchToHttp().getRequest().headers)
         authentication = context.switchToHttp().getRequest().headers['authentication'];
       }
       if (!authentication) {

@@ -60,4 +60,18 @@ export class CustomerInfoReceiverService {
       throw e;
     }
   }
+
+  async createBookingRequest(data: any) {
+    const session = await this.bookingRequestRepository.startTransaction();
+    try {
+      const bookingRequest = await this.bookingRequestRepository.create(data, { session });
+      await session.commitTransaction();
+      this.searchService.indexBookingRequest(bookingRequest);
+      return bookingRequest;
+    }
+    catch (e) {
+      await session.abortTransaction();
+      throw e;
+    }
+  }
 }

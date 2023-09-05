@@ -1,8 +1,9 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { LOCATE_SERVICE, RECEIVER_SERVICE, TRACKER_SERVICE } from './constants/services';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { CreateTracker } from './dto/createTracker.request';
+import { CreateBookingRequest } from './dto/createBookingRequest.request';
 
 @Injectable()
 export class AdminService {
@@ -21,7 +22,7 @@ export class AdminService {
       await lastValueFrom(this.receiverClient.emit('call_receiver', { message }));
     }
     catch (e) {
-      throw e;
+      throw new UnauthorizedException('Token expired or ' + e);
     }
   }
 
@@ -31,7 +32,7 @@ export class AdminService {
       await lastValueFrom(this.locateClient.emit('call_locate', { message }));
     }
     catch (e) {
-      throw e;
+      throw new UnauthorizedException('Token expired or ' + e);
     }
   }
 
@@ -41,7 +42,7 @@ export class AdminService {
       await lastValueFrom(this.trackerClient.emit('call_tracker', { message }));
     }
     catch (e) {
-      throw e;
+      throw new UnauthorizedException('Token expired or ' + e);
     }
   }
 
@@ -51,7 +52,7 @@ export class AdminService {
       const tracker = await lastValueFrom(check);
       return tracker;
     } catch (e) {
-      throw e;
+      throw new UnauthorizedException('Token expired or ' + e);
     }
   }
 
@@ -62,7 +63,7 @@ export class AdminService {
       return requests;
     }
     catch (e) {
-      throw e;
+      throw new UnauthorizedException('Token expired or ' + e);
     }
   }
 
@@ -73,14 +74,29 @@ export class AdminService {
       return requests;
     }
     catch (e) {
-      throw e;
+      throw new UnauthorizedException('Token expired or ' + e);
     }
   }
 
   async getBookingRequest(offset?: number, limit?: number, startId?: number) {
-    const check = this.receiverClient.send('get_booking_request_paginate', {offset, limit, startId });
-    const requests = await lastValueFrom(check);
-    return requests;
+    try {
+      const check = this.receiverClient.send('get_booking_request_paginate', { offset, limit, startId });
+      const requests = await lastValueFrom(check);
+      return requests;
+    }
+    catch (e) {
+      throw new UnauthorizedException('Token expired or ' + e);
+    }
   }
 
+  async createBookingRequest(dto: CreateBookingRequest) {
+    try {
+      const check = this.receiverClient.send('create_booking_request', { dto });
+      const request = await lastValueFrom(check);
+      return request;
+    }
+    catch (e) {
+      throw new UnauthorizedException('Token expired or ' + e);
+    }
+  }
 }

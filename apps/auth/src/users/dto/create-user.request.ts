@@ -1,5 +1,6 @@
+import { Role } from '@app/common';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsPhoneNumber, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsNumber, IsPhoneNumber, IsString } from 'class-validator';
 
 export class CreateUserRequest {
   @IsNotEmpty()
@@ -15,12 +16,20 @@ export class CreateUserRequest {
 
   @IsString()
   @IsNotEmpty()
-  @ApiProperty({ example: "" })
+  @ApiProperty({ example: "Nguyen Van A" })
   full_name: string;
   
-  @IsString()
+  @IsEnum(Role)
   @IsNotEmpty()
-  @ApiProperty({ example: "" , description: "only takes these arguments: ADMIN, CUSTOMER, DRIVER"})
-  role: string
+  @ApiProperty({ example: "CUSTOMER"})
+  role: Role
+
+  @ApiProperty()
+  @IsNumber()
+  longtitude: number
+
+  @ApiProperty()
+  @IsNumber()
+  latitude: number
 
 }

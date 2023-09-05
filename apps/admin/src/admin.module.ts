@@ -6,7 +6,6 @@ import * as Joi from 'joi';
 import { AuthModule, DatabaseModule, RmqModule } from '@app/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { RECEIVER_SERVICE, LOCATE_SERVICE, TRACKER_SERVICE } from './constants/services';
-import { AdminMiddleware } from './admin.middleware';
 
 @Module({
   imports: [
@@ -35,8 +34,4 @@ import { AdminMiddleware } from './admin.middleware';
   controllers: [AdminController],
   providers: [AdminService],
 })
-export class AdminModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AdminMiddleware).forRoutes(AdminController);
-  }
-}
+export class AdminModule {}

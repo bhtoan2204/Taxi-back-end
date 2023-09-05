@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, Res, UseGuards, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res, UseGuards, Query, Headers } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { JwtAuthGuard } from '@app/common';
 import { Request } from 'express';
@@ -6,7 +6,13 @@ import { CustomerReceiver } from './dto/getLocation.request';
 import { CreateTrackerDTO } from './dto/createTracker.dto';
 import { CreateTracker } from './dto/createTracker.request';
 import PaginationParamsDto from './dto/paginationParams.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { CreateBookingRequest } from './dto/createBookingRequest.request';
+import { CurrentUser } from 'apps/auth/src/current-user.decorator';
+import { AdminGuard } from '@app/common/auth/admin.guard';
 
+@ApiTags('Admin')
+@UseGuards(JwtAuthGuard)
 @Controller()
 export class AdminController {
   constructor(
@@ -14,35 +20,21 @@ export class AdminController {
 
     ) { }
 
+  @UseGuards(AdminGuard)
   @Get()
   getHello(): string {
     return this.adminService.getHello();
   }
 
+  @UseGuards(AdminGuard)
   @Post('getReceiver')
-  @UseGuards(JwtAuthGuard)
-  async callReceiver(@Body() dto: CustomerReceiver, @Req() request: Request) {
+  async getReceiver(@Body() dto: CustomerReceiver, @Req() request: Request, @Headers('authentication') authentication: string) {
     return await this.adminService.callReceiver();
   }
 
-  @Get('call_receiver')
-  async testConnect1() {
-    return await this.adminService.callReceiver();
-  }
-
-  @Get('call_locate')
-  async testConnect2() {
-    return await this.adminService.callLocate();
-  }
-
-  @Get('call_tracker')
-  async testConnect3() {
-    return await this.adminService.callTracker();
-  }
-
+  @UseGuards(AdminGuard)
   @Post('createTracker')
-  @UseGuards(JwtAuthGuard)
-  async createTracker(@Body() dto: CreateTrackerDTO, @Req() request: Request) {
+  async createTracker(@Body() dto: CreateTrackerDTO, @Req() request: Request, @Headers('authentication') authentication: string) {
     const newTracker = new CreateTracker();
     newTracker.customer_id = dto.customer_id;
     newTracker.driver_id = dto.driver_id;
@@ -55,18 +47,25 @@ export class AdminController {
     return tracker;
   }
 
+  @UseGuards(AdminGuard)
   @Get('getBookingRequest')
-  @UseGuards(JwtAuthGuard)
-  async getBookingRequest() {
+  async getBookingRequest(@Headers('authentication') authentication: string) {
     const bookingRequests = await this.adminService.getAllBookingRequests();
     return bookingRequests;
   }
 
+  @UseGuards(AdminGuard)
+  @Post('createBookingRequest')
+  async createBookingRequest(@Body() dto: CreateBookingRequest, @Headers('authentication') authentication: string){
+    const bookingRequest = await this.adminService.createBookingRequest(dto);
+    return bookingRequest;
+  }
+
   @Get('search-booking-request')
-  @UseGuards(JwtAuthGuard)
   async searchBookingRequest(
     @Query('search') search: string,
     @Query() query: PaginationParamsDto,
+    @Headers('authentication') authentication: string
   ) {
     const { limit, offset, startId } = query;
 

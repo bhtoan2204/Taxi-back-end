@@ -9,7 +9,6 @@ import { BookingRequestRepository } from './repositories/bookingRequest.reposito
 import { BookingRequest, BookingRequestSchema } from './schema/bookingRequest.schema';
 import SearchService from '@app/common/elasticsearch/search.service';
 import { ElasticsearchModule } from '@nestjs/elasticsearch';
-import { CustomerMiddleware } from './customer.middleware';
 
 @Module({
   imports: [
@@ -46,8 +45,4 @@ import { CustomerMiddleware } from './customer.middleware';
     BookingRequestRepository,
     SearchService],
 })
-export class CustomerModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(CustomerMiddleware).forRoutes(CustomerController);
-  }
-}
+export class CustomerModule {}

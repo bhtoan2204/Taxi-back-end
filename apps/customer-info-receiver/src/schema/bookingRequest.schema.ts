@@ -1,5 +1,6 @@
 import { Schema, Prop, SchemaFactory } from "@nestjs/mongoose";
-import { AbstractDocument } from "@app/common";
+import { AbstractDocument, CarType, Status } from "@app/common";
+import { string } from "joi";
 
 @Schema({ versionKey: false })
 export class BookingRequest extends AbstractDocument {
@@ -7,13 +8,19 @@ export class BookingRequest extends AbstractDocument {
     customer_id: string;
 
     @Prop()
+    driver_id: string;
+
+    @Prop({ type: String, enum: Status, default: Status.PENDING })
+    status: Status;
+
+    @Prop()
     phone: string
 
-    @Prop()
+    @Prop({default: new Date().toISOString()})
     booking_time: Date;
 
-    @Prop()
-    car_type: number
+    @Prop({ type: String, enum: CarType, default: CarType.BIKE })
+    car_type: CarType
 
     @Prop()
     pickup_address: string;

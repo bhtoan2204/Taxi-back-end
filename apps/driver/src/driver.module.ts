@@ -5,7 +5,6 @@ import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { AuthModule, DatabaseModule, RmqModule } from '@app/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { DriverMiddleware } from './driver.middleware';
 
 @Module({
   imports: [
@@ -24,8 +23,4 @@ import { DriverMiddleware } from './driver.middleware';
   controllers: [DriverController],
   providers: [DriverService],
 })
-export class DriverModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(DriverMiddleware).forRoutes(DriverController);
-  }
-}
+export class DriverModule {}

@@ -41,4 +41,11 @@ export class CustomerInfoReceiverController {
     this.rmqService.ack(context);
     return result;
   }
+
+  @EventPattern('create_booking_request')
+  async createBookingRequest(@Payload() data: any, @Ctx() context: RmqContext){
+    const result = this.customerInfoReceiverService.createBookingRequest(data.dto);
+    this.rmqService.ack(context);
+    return result;
+  }
 }

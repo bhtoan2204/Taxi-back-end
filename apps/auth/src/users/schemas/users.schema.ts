@@ -1,7 +1,5 @@
 import { AbstractDocument, Role } from "@app/common";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Type } from "class-transformer";
-import { string } from "joi";
 
 @Schema({ versionKey: false })
 export class User extends AbstractDocument {
@@ -14,11 +12,11 @@ export class User extends AbstractDocument {
     @Prop()
     full_name: string;
 
-    @Prop()
+    @Prop({ type: String, enum: Role })
     role: string
 
     @Prop()
-    longtitude: number
+    longitude: number
 
     @Prop()
     latitude: number

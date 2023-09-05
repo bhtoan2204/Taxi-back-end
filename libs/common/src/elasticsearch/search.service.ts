@@ -45,6 +45,8 @@ export default class SearchService {
         }
         const { body } = await this.elasticsearchService.search<BookingRequestResult>({
             index: this.index,
+            from: offset,
+            size: limit,
             body: {
                 query: {
                     bool: {
@@ -57,6 +59,11 @@ export default class SearchService {
                             {
                                 match: {
                                     phone: text,
+                                },
+                            },
+                            {
+                                match: {
+                                    dropoff_address: text,
                                 },
                             },
                         ],
