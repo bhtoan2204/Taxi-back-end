@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { BookingRequestRepository } from 'apps/customer-info-receiver/src/repositories/bookingRequest.repository';
-import SearchService from '../../../libs/common/src/elasticsearch/search.service';
+import { Status } from '@app/common';
+import { SearchService } from '@app/common/elasticsearch/search.service';
 
 
 @Injectable()
@@ -65,6 +66,18 @@ export class CustomerInfoReceiverService {
       const bookingRequest = await this.bookingRequestRepository.create(data, { session });
       await session.commitTransaction();
       this.searchService.indexBookingRequest(bookingRequest);
+      return bookingRequest;
+    }
+    catch (e) {
+      await session.abortTransaction();
+      throw e;
+    }
+  }
+
+  async getHistory(_id: string){
+    const session = await this.bookingRequestRepository.startTransaction();
+    try {
+      const bookingRequest = await this.bookingRequestRepository.find({customer_id: _id, status: Status.COMPLETED});
       return bookingRequest;
     }
     catch (e) {

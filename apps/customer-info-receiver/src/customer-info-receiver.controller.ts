@@ -48,4 +48,11 @@ export class CustomerInfoReceiverController {
     this.rmqService.ack(context);
     return result;
   }
+
+  @EventPattern('get_history')
+  async getHistory(@Payload() data: any, @Ctx() context: RmqContext){
+    const result = this.customerInfoReceiverService.getHistory(data._id);
+    this.rmqService.ack(context);
+    return result;
+  }
 }

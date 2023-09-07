@@ -2,7 +2,9 @@ import { Controller, Get, UseGuards } from '@nestjs/common';
 import { DriverService } from './driver.service';
 import { JwtAuthGuard } from '@app/common';
 import { DriverGuard } from '@app/common/auth/driver.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Driver')
 @Controller()
 @UseGuards(JwtAuthGuard)
 export class DriverController {

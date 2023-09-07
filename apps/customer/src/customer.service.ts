@@ -1,15 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { BookingRequestRepository } from './repositories/bookingRequest.repository';
 import { CreateBookingRequest } from './dto/createBookingRequest.request';
-import SearchService from '@app/common/elasticsearch/search.service';
+import {SearchService} from '@app/common/elasticsearch/search.service';
 import { UsersRepository } from './users/users.repository';
+import { RECEIVER_SERVICE } from '../constant/services';
+import { ClientProxy } from '@nestjs/microservices';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class CustomerService {
   constructor(
     private readonly bookingRequestRepository: BookingRequestRepository,
     private readonly searchService: SearchService,
-    private readonly userRepository: UsersRepository
+    private readonly userRepository: UsersRepository,
+    @Inject(RECEIVER_SERVICE) private receiverClient: ClientProxy
   ) { }
   getHello(): string {
     return 'Hello World! From Customer';
@@ -41,6 +45,17 @@ export class CustomerService {
     catch (e) {
       await session.abortTransaction();
       throw e;
+    }
+  }
+
+  async getHistory(_id: string) {
+    try {
+      const check = this.receiverClient.send('get_history', { _id });
+      const requests = await lastValueFrom(check);
+      return requests;
+    }
+    catch (e) {
+      throw new UnauthorizedException('Token expired or ' + e);
     }
   }
 }

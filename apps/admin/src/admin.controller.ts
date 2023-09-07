@@ -16,21 +16,7 @@ import { AdminGuard } from '@app/common/auth/admin.guard';
 @Controller()
 export class AdminController {
   constructor(
-    private readonly adminService: AdminService,
-
-    ) { }
-
-  @UseGuards(AdminGuard)
-  @Get()
-  getHello(): string {
-    return this.adminService.getHello();
-  }
-
-  @UseGuards(AdminGuard)
-  @Post('getReceiver')
-  async getReceiver(@Body() dto: CustomerReceiver, @Req() request: Request, @Headers('authentication') authentication: string) {
-    return await this.adminService.callReceiver();
-  }
+    private readonly adminService: AdminService) { }
 
   @UseGuards(AdminGuard)
   @Post('createTracker')

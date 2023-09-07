@@ -6,7 +6,7 @@ import BookingRequestBody from './interface/bookingRequest.search-body.interface
 import BookingRequestCountResult from './interface/bookingRequest.count-result.interface';
 
 @Injectable()
-export default class SearchService {
+export class SearchService {
     index = 'bookingrequests';
 
     constructor(private readonly elasticsearchService: ElasticsearchService) { }

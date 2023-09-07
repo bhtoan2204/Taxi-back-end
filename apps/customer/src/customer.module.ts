@@ -7,10 +7,11 @@ import * as Joi from 'joi'
 import { MongooseModule } from '@nestjs/mongoose';
 import { BookingRequestRepository } from './repositories/bookingRequest.repository';
 import { BookingRequest, BookingRequestSchema } from './schema/bookingRequest.schema';
-import SearchService from '@app/common/elasticsearch/search.service';
 import { ElasticsearchModule } from '@nestjs/elasticsearch';
 import { UsersRepository } from './users/users.repository';
 import { User, UserSchema } from './users/schemas/users.schema';
+import { RECEIVER_SERVICE } from '../constant/services';
+import { SearchService } from '@app/common/elasticsearch/search.service';
 
 @Module({
   imports: [
@@ -27,7 +28,9 @@ import { User, UserSchema } from './users/schemas/users.schema';
     MongooseModule.forFeature([{ name: BookingRequest.name, schema: BookingRequestSchema }]),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     DatabaseModule,
-    RmqModule,
+    RmqModule.register({
+      name: RECEIVER_SERVICE
+    }),
     AuthModule,
     ElasticsearchModule.registerAsync({
       imports: [ConfigModule],

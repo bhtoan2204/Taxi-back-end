@@ -12,7 +12,7 @@ async function bootstrap() {
   // SWAGGER CONFIG
   const configSwagger = new DocumentBuilder()
     .setTitle('Admin')
-    .setDescription('Authentication API')
+    .setDescription('Admin API')
     .setVersion('1.0')
     .addTag('taxi')
     .addBearerAuth(
@@ -24,8 +24,7 @@ async function bootstrap() {
         type: 'http',
         in: 'Header'
       }, 'authentication'
-    )
-    .build()
+    ).build()
 
   const document = SwaggerModule.createDocument(app, configSwagger);
   SwaggerModule.setup('', app, document, {
