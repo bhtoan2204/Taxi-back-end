@@ -5,10 +5,6 @@ import { IsString, IsNumber, IsPhoneNumber, IsDateString, IsEnum } from 'class-v
 export class CreateBookingRequest {
     @ApiProperty()
     @IsString()
-    customer_id: string;
-
-    @ApiProperty()
-    @IsString()
     driver_id: string;
 
     @ApiProperty()

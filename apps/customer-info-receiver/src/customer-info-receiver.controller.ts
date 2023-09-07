@@ -9,18 +9,6 @@ export class CustomerInfoReceiverController {
     private readonly customerInfoReceiverService: CustomerInfoReceiverService,
     private readonly rmqService: RmqService) {}
 
-  @Get()
-  getHello(): string {
-    return this.customerInfoReceiverService.getHello();
-  }
-
-  @EventPattern('call_receiver')
-  //@UseGuards(JwtAuthGuard)
-  async testConnect(@Payload() data: any, @Ctx() context: RmqContext){
-    this.customerInfoReceiverService.getMessage(data);
-    this.rmqService.ack(context);
-  }
-
   @EventPattern('get_booking_request')
   async getAllBookingRequest(@Ctx() context: RmqContext) {
     const result = this.customerInfoReceiverService.getAllBookingRequest();
@@ -55,4 +43,12 @@ export class CustomerInfoReceiverController {
     this.rmqService.ack(context);
     return result;
   }
+
+  @EventPattern('create_booking_customer')
+  async createBookingRequestByCustomer(@Payload() data: any, @Ctx() context: RmqContext){
+    const result = this.customerInfoReceiverService.createBookingRequestByCustomer(data.data, data._id);
+    this.rmqService.ack(context);
+    return result;
+  }
+  
 }

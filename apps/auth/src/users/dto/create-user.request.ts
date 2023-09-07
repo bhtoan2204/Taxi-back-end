@@ -24,12 +24,4 @@ export class CreateUserRequest {
   @ApiProperty({ example: "CUSTOMER"})
   role: Role
 
-  @ApiProperty()
-  @IsNumber()
-  longtitude: number
-
-  @ApiProperty()
-  @IsNumber()
-  latitude: number
-
 }

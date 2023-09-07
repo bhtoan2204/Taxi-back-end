@@ -4,5 +4,6 @@ export interface UserInforPayload {
     phone: string,
     role: string,
     latitude: string,
-    longitude: string
+    longitude: string,
+    is_Vip: boolean
   }

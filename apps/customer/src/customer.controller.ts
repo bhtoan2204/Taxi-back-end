@@ -16,15 +16,16 @@ export class CustomerController {
 
   @Post('sendBookingRequest')
   @UseGuards(CustomerGuard)
-  async sendBookingRequest(@Body() dto: CreateBookingRequest, @Headers('authentication') authentication: string) {
-    return await this.customerService.createBookingRequest(dto);
+  async sendBookingRequest(@Body() dto: CreateBookingRequest, @Headers('authentication') authentication: string, @Req() request) {
+    const { _id } = request.user as UserInforPayload;
+    return await this.customerService.createBookingRequestByCustomer(dto, _id);
   }
 
   @Get('userInfor')
   @UseGuards(CustomerGuard)
   async getUserInfor(@Req() request, @Headers('authentication') authentication: string) {
-    const { _id, phone, role, latitude, longitude, full_name } = request.user as UserInforPayload;
-    return { _id, phone, role, latitude, longitude, full_name };
+    const { _id, phone, role, latitude, longitude, full_name, is_Vip } = request.user as UserInforPayload;
+    return { _id, phone, role, latitude, longitude, full_name, is_Vip };
   }
 
   @Patch('setLatLong')

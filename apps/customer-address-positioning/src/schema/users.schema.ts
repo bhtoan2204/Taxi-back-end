@@ -20,6 +20,12 @@ export class User extends AbstractDocument {
 
     @Prop()
     latitude: number
+
+    @Prop()
+    is_Vip: boolean
+
+    @Prop()
+    total_booking: number
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

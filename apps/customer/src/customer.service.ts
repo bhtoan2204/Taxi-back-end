@@ -1,9 +1,9 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { BookingRequestRepository } from './repositories/bookingRequest.repository';
 import { CreateBookingRequest } from './dto/createBookingRequest.request';
-import {SearchService} from '@app/common/elasticsearch/search.service';
-import { UsersRepository } from './users/users.repository';
-import { RECEIVER_SERVICE } from '../constant/services';
+import { SearchService } from '@app/common/elasticsearch/search.service';
+import { UsersRepository } from './repositories/users.repository';
+import { LOCATE_SERVICE, RECEIVER_SERVICE } from '../constant/services';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 
@@ -13,37 +13,31 @@ export class CustomerService {
     private readonly bookingRequestRepository: BookingRequestRepository,
     private readonly searchService: SearchService,
     private readonly userRepository: UsersRepository,
-    @Inject(RECEIVER_SERVICE) private receiverClient: ClientProxy
+    @Inject(RECEIVER_SERVICE) private receiverClient: ClientProxy,
+    @Inject(LOCATE_SERVICE) private locateClient: ClientProxy,
   ) { }
   getHello(): string {
     return 'Hello World! From Customer';
   }
 
-  async createBookingRequest(data: CreateBookingRequest) {
-    const session = await this.bookingRequestRepository.startTransaction();
+  async createBookingRequestByCustomer(data: CreateBookingRequest, _id: string) {
     try {
-      const bookingRequest = await this.bookingRequestRepository.create(data, { session });
-      await session.commitTransaction();
-      this.searchService.indexBookingRequest(bookingRequest);
-      return bookingRequest;
+      const check = this.receiverClient.send('create_booking_customer', { data, _id });
+      const requests = await lastValueFrom(check);
+      return requests;
     }
     catch (e) {
-      await session.abortTransaction();
       throw e;
     }
   }
 
   async setLatLong(_id: string, dto: any) {
-    const session = await this.bookingRequestRepository.startTransaction();
-    const filterQuery = { _id: _id }
-    const updateQuery = { latitude: dto.latitude, longitude: dto.longitude }
     try {
-      const updatedUser = await this.userRepository.findOneAndUpdate(filterQuery, updateQuery);
-      await session.commitTransaction();
-      return { latitude: updatedUser.latitude, longitude: updatedUser.longitude };
+      const check = this.locateClient.send('set_LatLong', { _id, dto });
+      const requests = await lastValueFrom(check);
+      return requests;
     }
     catch (e) {
-      await session.abortTransaction();
       throw e;
     }
   }

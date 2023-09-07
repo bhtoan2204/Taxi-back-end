@@ -8,9 +8,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { BookingRequestRepository } from './repositories/bookingRequest.repository';
 import { BookingRequest, BookingRequestSchema } from './schema/bookingRequest.schema';
 import { ElasticsearchModule } from '@nestjs/elasticsearch';
-import { UsersRepository } from './users/users.repository';
-import { User, UserSchema } from './users/schemas/users.schema';
-import { RECEIVER_SERVICE } from '../constant/services';
+import { UsersRepository } from './repositories/users.repository';
+import { User, UserSchema } from './schema/users.schema';
+import { LOCATE_SERVICE, RECEIVER_SERVICE } from '../constant/services';
 import { SearchService } from '@app/common/elasticsearch/search.service';
 
 @Module({
@@ -30,6 +30,9 @@ import { SearchService } from '@app/common/elasticsearch/search.service';
     DatabaseModule,
     RmqModule.register({
       name: RECEIVER_SERVICE
+    }),
+    RmqModule.register({
+      name: LOCATE_SERVICE
     }),
     AuthModule,
     ElasticsearchModule.registerAsync({

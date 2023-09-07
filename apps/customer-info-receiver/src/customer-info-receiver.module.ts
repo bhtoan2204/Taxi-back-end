@@ -9,6 +9,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { BookingRequestRepository } from '../src/repositories/bookingRequest.repository';
 import { ElasticsearchModule } from '@nestjs/elasticsearch';
 import { SearchService } from '@app/common/elasticsearch/search.service';
+import { UsersRepository } from './repositories/users.repository';
+import { User, UserSchema } from './schema/users.schema';
 
 @Module({
   imports: [
@@ -28,6 +30,7 @@ import { SearchService } from '@app/common/elasticsearch/search.service';
     AuthModule,
     DatabaseModule,
     MongooseModule.forFeature([{ name: BookingRequest.name, schema: BookingRequestSchema }]),
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     ElasticsearchModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -46,7 +49,8 @@ import { SearchService } from '@app/common/elasticsearch/search.service';
   providers: [
     CustomerInfoReceiverService,
     BookingRequestRepository,
-    SearchService
+    SearchService,
+    UsersRepository
   ],
 })
 export class CustomerInfoReceiverModule { }

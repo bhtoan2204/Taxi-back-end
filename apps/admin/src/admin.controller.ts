@@ -2,13 +2,11 @@ import { Body, Controller, Get, Post, Req, Res, UseGuards, Query, Headers } from
 import { AdminService } from './admin.service';
 import { JwtAuthGuard } from '@app/common';
 import { Request } from 'express';
-import { CustomerReceiver } from './dto/getLocation.request';
 import { CreateTrackerDTO } from './dto/createTracker.dto';
 import { CreateTracker } from './dto/createTracker.request';
 import PaginationParamsDto from './dto/paginationParams.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateBookingRequest } from './dto/createBookingRequest.request';
-import { CurrentUser } from 'apps/auth/src/current-user.decorator';
 import { AdminGuard } from '@app/common/auth/admin.guard';
 
 @ApiTags('Admin')
@@ -47,7 +45,8 @@ export class AdminController {
     return bookingRequest;
   }
 
-  @Get('search-booking-request')
+  @UseGuards(AdminGuard)
+  @Get('searchBookingRequest')
   async searchBookingRequest(
     @Query('search') search: string,
     @Query() query: PaginationParamsDto,

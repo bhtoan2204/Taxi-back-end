@@ -9,15 +9,10 @@ export class CustomerAddressPositioningController {
     private readonly customerAddressPositioningService: CustomerAddressPositioningService,
     private readonly rmqService: RmqService) {}
 
-  @Get()
-  getHello(): string {
-    return this.customerAddressPositioningService.getHello();
-  }
-
-  @EventPattern('call_locate')
-  //@UseGuards(JwtAuthGuard)
-  async testConnect(@Payload() data: any, @Ctx() context: RmqContext){
-    this.customerAddressPositioningService.getMessage(data);
-    this.rmqService.ack(context);
-  }
+    @EventPattern('set_LatLong')
+    async LocateUser(@Payload() data: any, @Ctx() context: RmqContext){
+      const result = this.customerAddressPositioningService.setLatLong(data._id, data.dto);
+      this.rmqService.ack(context);
+      return result;
+    }
 }

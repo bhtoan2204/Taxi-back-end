@@ -2,8 +2,11 @@ import { Module } from '@nestjs/common';
 import { CustomerAddressPositioningController } from './customer-address-positioning.controller';
 import { CustomerAddressPositioningService } from './customer-address-positioning.service';
 import { ConfigModule } from '@nestjs/config';
-import { AuthModule, RmqModule } from '@app/common';
+import { AuthModule, DatabaseModule, RmqModule } from '@app/common';
 import * as Joi from 'joi';
+import { UsersRepository } from './repositories/users.repository';
+import { MongooseModule } from '@nestjs/mongoose';
+import { User, UserSchema } from './schema/users.schema';
 
 @Module({
   imports: [
@@ -15,10 +18,14 @@ import * as Joi from 'joi';
       }),
       envFilePath: './apps/customer-address-positioning/.env',
     }),
+    DatabaseModule,
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     RmqModule,
     AuthModule
   ],
   controllers: [CustomerAddressPositioningController],
-  providers: [CustomerAddressPositioningService],
+  providers: [
+    CustomerAddressPositioningService,
+    UsersRepository],
 })
 export class CustomerAddressPositioningModule {}

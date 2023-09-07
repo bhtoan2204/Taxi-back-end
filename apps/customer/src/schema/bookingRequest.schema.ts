@@ -1,6 +1,5 @@
 import { Schema, Prop, SchemaFactory } from "@nestjs/mongoose";
 import { AbstractDocument, CarType, Status } from "@app/common";
-import { string } from "joi";
 
 @Schema({ versionKey: false })
 export class BookingRequest extends AbstractDocument {
