@@ -6,6 +6,13 @@ async function bootstrap() {
   const app = await NestFactory.create(CustomerAddressPositioningModule);
   const rmqService = app.get<RmqService>(RmqService);
   app.connectMicroservice(rmqService.getOptions('LOCATE'));
+
+  app.enableCors({
+    origin: '*',
+    methods: '*',
+    allowedHeaders: '*',
+  });
+  
   await app.startAllMicroservices();
 }
 bootstrap();

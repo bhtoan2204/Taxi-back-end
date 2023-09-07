@@ -6,6 +6,13 @@ async function bootstrap() {
   const app = await NestFactory.create(DriverStatusTrackerModule);
   const rmqService = app.get<RmqService>(RmqService);
   app.connectMicroservice(rmqService.getOptions('TRACKER'));
+
+  app.enableCors({
+    origin: '*',
+    methods: '*',
+    allowedHeaders: '*',
+  });
+  
   await app.startAllMicroservices();
 }
 bootstrap();

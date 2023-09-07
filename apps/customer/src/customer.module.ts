@@ -9,6 +9,8 @@ import { BookingRequestRepository } from './repositories/bookingRequest.reposito
 import { BookingRequest, BookingRequestSchema } from './schema/bookingRequest.schema';
 import SearchService from '@app/common/elasticsearch/search.service';
 import { ElasticsearchModule } from '@nestjs/elasticsearch';
+import { UsersRepository } from './users/users.repository';
+import { User, UserSchema } from './users/schemas/users.schema';
 
 @Module({
   imports: [
@@ -23,6 +25,7 @@ import { ElasticsearchModule } from '@nestjs/elasticsearch';
       }
     ),
     MongooseModule.forFeature([{ name: BookingRequest.name, schema: BookingRequestSchema }]),
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     DatabaseModule,
     RmqModule,
     AuthModule,
@@ -43,6 +46,7 @@ import { ElasticsearchModule } from '@nestjs/elasticsearch';
   providers: [
     CustomerService,
     BookingRequestRepository,
-    SearchService],
+    SearchService,
+    UsersRepository],
 })
 export class CustomerModule {}
