@@ -60,4 +60,10 @@ export class AdminController {
 
     return this.adminService.getBookingRequest(offset, limit, startId);
   }
+
+  @UseGuards(AdminGuard)
+  @Post('geoCoding')
+  async getGeoCoding(@Body() address: string){
+    return this.adminService.getGeoCoding(address);
+  }
 }

@@ -13,39 +13,6 @@ export class AdminService {
     @Inject(TRACKER_SERVICE) private trackerClient: ClientProxy,
   ) { }
 
-  getHello(): string {
-    return 'Hello World! From Admin';
-  }
-  async callReceiver() {
-    try {
-      const message = "adu";
-      await lastValueFrom(this.receiverClient.emit('call_receiver', { message }));
-    }
-    catch (e) {
-      throw new UnauthorizedException('Token expired or ' + e);
-    }
-  }
-
-  async callLocate() {
-    try {
-      const message = "adu";
-      await lastValueFrom(this.locateClient.emit('call_locate', { message }));
-    }
-    catch (e) {
-      throw new UnauthorizedException('Token expired or ' + e);
-    }
-  }
-
-  async callTracker() {
-    try {
-      const message = "adu";
-      await lastValueFrom(this.trackerClient.emit('call_tracker', { message }));
-    }
-    catch (e) {
-      throw new UnauthorizedException('Token expired or ' + e);
-    }
-  }
-
   async createTracker(dto: CreateTracker) {
     try {
       const check = this.trackerClient.send('create_tracker', { dto });
@@ -92,6 +59,17 @@ export class AdminService {
   async createBookingRequest(dto: CreateBookingRequest) {
     try {
       const check = this.receiverClient.send('create_booking_request', { dto });
+      const request = await lastValueFrom(check);
+      return request;
+    }
+    catch (e) {
+      throw new UnauthorizedException('Token expired or ' + e);
+    }
+  }
+
+  async getGeoCoding(address: string){
+    try {
+      const check = this.locateClient.send('get_geo_coding', { address });
       const request = await lastValueFrom(check);
       return request;
     }

@@ -10,9 +10,16 @@ export class CustomerAddressPositioningController {
     private readonly rmqService: RmqService) {}
 
     @EventPattern('set_LatLong')
-    async LocateUser(@Payload() data: any, @Ctx() context: RmqContext){
+    async locateUser(@Payload() data: any, @Ctx() context: RmqContext){
       const result = this.customerAddressPositioningService.setLatLong(data._id, data.dto);
       this.rmqService.ack(context);
       return result;
+    }
+
+    @EventPattern('get_geo_coding')
+    async getGeoCoding(@Payload() data: any, @Ctx() context: RmqContext){
+      const result = this.customerAddressPositioningService.getGeoCoding(data.address);
+      this.rmqService.ack(context);
+      return result
     }
 }

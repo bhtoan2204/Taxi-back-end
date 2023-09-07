@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { UsersRepository } from './repositories/users.repository';
+import { HttpService } from '@nestjs/axios';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class CustomerAddressPositioningService {
   constructor(
-    private readonly userRepository: UsersRepository
+    private readonly userRepository: UsersRepository,
+    private readonly httpService: HttpService,
+    private readonly configService: ConfigService
   ) { }
 
   async setLatLong(_id: string, dto: any) {
@@ -17,5 +21,16 @@ export class CustomerAddressPositioningService {
     catch (e) {
       throw e;
     }
+  }
+
+  async getGeoCoding(address: string){
+    try {
+      const response = await this.httpService.axiosRef.get(
+          `https://api.openrouteservice.org/geocode/search?api_key=${this.configService.get('API_KEY')}&text=${address}&boundary.country=VN&size=1`,
+      );
+      return response.data.features[0].geometry.coordinates;
+  } catch (error) {
+      throw error;
+  }
   }
 }
