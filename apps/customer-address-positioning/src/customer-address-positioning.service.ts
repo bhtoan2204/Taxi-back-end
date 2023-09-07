@@ -23,14 +23,16 @@ export class CustomerAddressPositioningService {
     }
   }
 
-  async getGeoCoding(address: string){
+  async getGeoCoding(address: string) {
     try {
       const response = await this.httpService.axiosRef.get(
-          `https://api.openrouteservice.org/geocode/search?api_key=${this.configService.get('API_KEY')}&text=${address}&boundary.country=VN&size=1`,
+        `https://api.openrouteservice.org/geocode/search?api_key=${this.configService.get('API_KEY')}&text=${address}&boundary.country=VN&size=1`,
       );
-      return response.data.features[0].geometry.coordinates;
-  } catch (error) {
+      const longitude = response.data.features[0].geometry.coordinates[0];
+      const latitude = response.data.features[0].geometry.coordinates[1];
+      return { latitude, longitude };
+    } catch (error) {
       throw error;
-  }
+    }
   }
 }
