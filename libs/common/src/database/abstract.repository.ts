@@ -87,5 +87,32 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
     return session;
   }
 
+  async count(filterQuery: FilterQuery<TDocument>): Promise<number> {
+    const count = await this.model.countDocuments(filterQuery);
+    return count;
+  }
+
+  async calculateTotalPriceByQuery(query: Record<string, any>): Promise<number> {
+    const aggregationPipeline = [
+      {
+        $match: query // Use the provided query object
+      },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$price" }
+        }
+      }
+    ];
+  
+    const result = await this.model.aggregate(aggregationPipeline).exec();
+  
+    if (result.length > 0) {
+      return result[0].total;
+    } else {
+      return 0; // Return 0 if no matching documents are found
+    }
+  }
+  
 
 }

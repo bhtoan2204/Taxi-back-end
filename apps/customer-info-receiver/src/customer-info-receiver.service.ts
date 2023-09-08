@@ -5,6 +5,25 @@ import { SearchService } from '@app/common/elasticsearch/search.service';
 import { UsersRepository } from './repositories/users.repository';
 
 
+function getDistance(fromLat: number, fromLong: number, toLat: number, toLong: number) {
+  const earthRadiusKm = 6371;
+  const fromLatRad = fromLat * (Math.PI / 180);
+  const fromLongRad = fromLong * (Math.PI / 180);
+  const toLatRad = toLat * (Math.PI / 180);
+  const toLongRad = toLong * (Math.PI / 180);
+
+  const dLat = toLatRad - fromLatRad;
+  const dLong = toLongRad - fromLongRad;
+
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(fromLatRad) * Math.cos(toLatRad) * Math.sin(dLong / 2) ** 2;
+
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  const distance = earthRadiusKm * c;
+
+  return distance;
+}
+
 @Injectable()
 export class CustomerInfoReceiverService {
   constructor(
@@ -103,4 +122,43 @@ export class CustomerInfoReceiverService {
       throw e;
     }
   }
+
+  async getNearbyBookingRequest(dto: any){
+    try {
+      const bookingRequest = await this.bookingRequestRepository.find({status: Status.PENDING});
+      const results = []
+      for (let i =0; i<bookingRequest.length; i++){
+        let flight_distance = getDistance(dto.latitude, dto.longitude, bookingRequest[i].pickup_latitude, bookingRequest[i].pickup_longitude);
+        flight_distance = +flight_distance.toFixed(2);
+        let result = {
+          flight_distance: flight_distance,
+          ...bookingRequest[i]
+        }
+        results.push(result);
+      }
+      results.sort((a, b) => a.flight_distance - b.flight_distance);
+      const top5Nearest = results.slice(0, 5);
+      return top5Nearest;
+    }
+    catch (e) {
+      throw e;
+    }
+  }
+
+  async getStatistics(){
+    try {
+      const total_request = await this.bookingRequestRepository.count({});
+      const total_completed_request = await this.bookingRequestRepository.count({status: Status.COMPLETED});
+      const total_price = await this.bookingRequestRepository.calculateTotalPriceByQuery({});
+      const total_price_completed = await this.bookingRequestRepository.calculateTotalPriceByQuery({status: Status.COMPLETED});
+      let profit = total_price * 0.3;
+      profit = +profit.toFixed(2);
+      
+      return {total_request, total_completed_request, total_price, total_price_completed, profit};
+    }
+    catch (e) {
+      throw e;
+    }
+  }
 }
+

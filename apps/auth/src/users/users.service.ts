@@ -11,12 +11,12 @@ import { User } from './schemas/users.schema';
 import { LatLongRequest } from './dto/latlong-request';
 import { ConfigService } from '@nestjs/config';
 import * as jwt from 'jsonwebtoken';
+import { Role } from '@app/common';
 
 @Injectable()
 export class UsersService {
     constructor(
-        private readonly usersRepository: UsersRepository,
-        private configService: ConfigService) { }
+        private readonly usersRepository: UsersRepository) { }
 
     async createUser(request: CreateUserRequest) {
         await this.validateCreateUserRequest(request);
@@ -29,7 +29,6 @@ export class UsersService {
             latitude: -1,
             is_Vip: false,
             total_booking: 0,
-            status: null
         });
         return user;
     }
@@ -44,6 +43,10 @@ export class UsersService {
 
         if (user) {
             throw new UnprocessableEntityException('Phone already exists.');
+        }
+
+        if (user.role == Role.ADMIN){
+            throw new UnprocessableEntityException('Admin can not be created.');
         }
     }
 

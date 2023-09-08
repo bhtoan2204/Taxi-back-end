@@ -7,7 +7,7 @@ import { AuthModule, DatabaseModule, RmqModule } from '@app/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersRepository } from './repositories/users.repository';
 import { User, UserSchema } from './schema/users.schema';
-import { LOCATE_SERVICE } from './constants/services';
+import { LOCATE_SERVICE, RECEIVER_SERVICE } from './constants/services';
 
 @Module({
   imports: [
@@ -24,7 +24,11 @@ import { LOCATE_SERVICE } from './constants/services';
     AuthModule,
     RmqModule.register({
       name: LOCATE_SERVICE
-    }),],
+    }),
+    RmqModule.register({
+      name: RECEIVER_SERVICE
+    }),
+  ],
   controllers: [DriverController],
   providers: [DriverService, UsersRepository],
 })

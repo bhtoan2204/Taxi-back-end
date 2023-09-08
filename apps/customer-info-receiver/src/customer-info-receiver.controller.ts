@@ -44,4 +44,17 @@ export class CustomerInfoReceiverController {
     return result;
   }
   
+  @EventPattern('get_nearby_booking_requests')
+  async getNearbyBookingRequest(@Payload() data: any, @Ctx() context: RmqContext){
+    const result = this.customerInfoReceiverService.getNearbyBookingRequest(data.dto);
+    this.rmqService.ack(context);
+    return result;
+  }
+
+  @EventPattern('get_statistics')
+  async getStatistics(@Ctx() context: RmqContext){
+    const result = this.customerInfoReceiverService.getStatistics();
+    this.rmqService.ack(context);
+    return result;
+  }
 }

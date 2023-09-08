@@ -1,4 +1,5 @@
 export const LOCATE_SERVICE = 'LOCATE'
+export const RECEIVER_SERVICE = 'RECEIVER'
 
 export interface UserInforPayload {
     _id: string,

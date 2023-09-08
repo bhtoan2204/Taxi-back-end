@@ -77,4 +77,15 @@ export class AdminService {
       throw new UnauthorizedException(e);
     }
   }
+  
+  async getStatitics(){
+    try {
+      const check = this.locateClient.send('get_statistics', {});
+      const request = await lastValueFrom(check);
+      return request;
+    }
+    catch (e) {
+      throw new UnauthorizedException(e);
+    }
+  }
 }

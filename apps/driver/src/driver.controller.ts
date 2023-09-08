@@ -12,20 +12,6 @@ import { LatLongDTO } from './dto/latlong.request';
 export class DriverController {
   constructor(private readonly driverService: DriverService) {}
 
-  @Patch('setOnline')
-  @UseGuards(DriverGuard)
-  async setOnline(@Req() request, @Headers('authentication') authentication: string) {
-    const userId = request.user._id;
-    return this.driverService.setOnline(userId);
-  }
-
-  @Patch('setOffline')
-  @UseGuards(DriverGuard)
-  async setOffline(@Req() request, @Headers('authentication') authentication: string) {
-    const userId = request.user._id;
-    return this.driverService.setOffline(userId);
-  }
-
   @Get('userInfor')
   @UseGuards(DriverGuard)
   async getUserInfor(@Req() request, @Headers('authentication') authentication: string) {
@@ -34,9 +20,16 @@ export class DriverController {
   }
 
   @Patch('setLatLong')
-  @UseGuards(DriverGuard)
+  //@UseGuards(DriverGuard)
   async setLatLong(@Body() dto: LatLongDTO, @Req() request, @Headers('authentication') authentication: string) {
     const { _id } = request.user as UserInforPayload;
     return this.driverService.setLatLong(_id, dto);
+  }
+
+  @Get('getNearbyBookingRequest')
+  //@UseGuards(DriverGuard)
+  async getNearBookingRequest(@Req() request, @Headers('authentication') authentication: string){
+    const driver_infor = request.user as UserInforPayload;
+    return this.driverService.getNearBookingRequest(driver_infor);
   }
 }

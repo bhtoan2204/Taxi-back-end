@@ -63,8 +63,13 @@ export class AdminController {
 
   @UseGuards(AdminGuard)
   @Get('geoCoding')
-  async getGeoCoding(@Query() address: string){
-    console.log(address);
+  async getGeoCoding(@Query() address: string, @Headers('authentication') authentication: string){
     return this.adminService.getGeoCoding(address);
   }
+
+  @UseGuards(AdminGuard)
+  @Get('getStatitics')
+  async getStatitics(@Headers('authentication') authentication: string){
+    return this.adminService.getStatitics();
+  } 
 }
