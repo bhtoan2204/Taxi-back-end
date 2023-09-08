@@ -13,23 +13,7 @@ export class CustomerInfoReceiverService {
     private readonly userRepository: UsersRepository
   ) { }
   async getAllBookingRequest() {
-    try {
-      const bookingRequests = await this.bookingRequestRepository.find({});
-      let results = []
-      for (let i = 0; i < bookingRequests.length; i++) {
-        let iterator = {
-          customer_name: "",
-          driver_name: "",
-          driver_phone: "",
-          ...bookingRequests[i]
-        }
-        results.push(iterator);
-      }
-      return results;
-    }
-    catch (e) {
-      throw e
-    }
+    return await this.bookingRequestRepository.find({});
   }
 
   async searchBookingRequest(text: string, offset?: number, limit?: number, startId?: number) {

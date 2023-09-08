@@ -32,7 +32,7 @@ export class AdminController {
   }
 
   @UseGuards(AdminGuard)
-  @Get('getBookingRequest')
+  @Get('getAllBookingRequest')
   async getBookingRequest(@Headers('authentication') authentication: string) {
     const bookingRequests = await this.adminService.getAllBookingRequests();
     return bookingRequests;
@@ -62,8 +62,9 @@ export class AdminController {
   }
 
   @UseGuards(AdminGuard)
-  @Post('geoCoding')
-  async getGeoCoding(@Body() address: string){
+  @Get('geoCoding')
+  async getGeoCoding(@Query() address: string){
+    console.log(address);
     return this.adminService.getGeoCoding(address);
   }
 }
