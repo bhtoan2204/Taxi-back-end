@@ -18,7 +18,9 @@ export class SearchService {
                 id: bookingRequest._id.toString(),
                 phone: bookingRequest.phone,
                 pickup_address: bookingRequest.pickup_address,
-                dropoff_address: bookingRequest.dropoff_address
+                dropoff_address: bookingRequest.dropoff_address,
+                pickup_latitude: bookingRequest.pickup_latitude,
+                pickup_longitude: bookingRequest.pickup_longitude
             },
         });
     }

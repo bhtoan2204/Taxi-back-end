@@ -12,6 +12,11 @@ export enum Role {
     DRIVER = "DRIVER"
 }
 
+export enum CarType {
+    BIKE = "BIKE",
+    CAR = "CAR"
+}
+
 export enum Status {
     PENDING = "PENDING",
     CONFIRM = "CONFIRM",
