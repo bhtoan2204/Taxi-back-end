@@ -26,6 +26,9 @@ export class User extends AbstractDocument {
 
     @Prop()
     total_booking: number
+
+    @Prop()
+    status: string
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

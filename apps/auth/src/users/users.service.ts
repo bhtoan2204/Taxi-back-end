@@ -28,7 +28,8 @@ export class UsersService {
             longitude: -1,
             latitude: -1,
             is_Vip: false,
-            total_booking: 0
+            total_booking: 0,
+            status: null
         });
         return user;
     }

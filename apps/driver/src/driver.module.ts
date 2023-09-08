@@ -5,6 +5,9 @@ import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { AuthModule, DatabaseModule, RmqModule } from '@app/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { UsersRepository } from './repositories/users.repository';
+import { User, UserSchema } from './schema/users.schema';
+import { LOCATE_SERVICE } from './constants/services';
 
 @Module({
   imports: [
@@ -16,11 +19,13 @@ import { MongooseModule } from '@nestjs/mongoose';
       }),
       envFilePath: './apps/driver/.env'
     }),
-    MongooseModule,
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     DatabaseModule,
     AuthModule,
-    RmqModule],
+    RmqModule.register({
+      name: LOCATE_SERVICE
+    }),],
   controllers: [DriverController],
-  providers: [DriverService],
+  providers: [DriverService, UsersRepository],
 })
 export class DriverModule {}
