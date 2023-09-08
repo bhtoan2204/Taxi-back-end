@@ -19,7 +19,7 @@ export class AdminService {
       const tracker = await lastValueFrom(check);
       return tracker;
     } catch (e) {
-      throw new UnauthorizedException('Token expired or ' + e);
+      throw new UnauthorizedException(e);
     }
   }
 
@@ -30,7 +30,7 @@ export class AdminService {
       return requests;
     }
     catch (e) {
-      throw new UnauthorizedException('Token expired or ' + e);
+      throw new UnauthorizedException(e);
     }
   }
 
@@ -41,7 +41,7 @@ export class AdminService {
       return requests;
     }
     catch (e) {
-      throw new UnauthorizedException('Token expired or ' + e);
+      throw new UnauthorizedException(e);
     }
   }
 
@@ -52,7 +52,7 @@ export class AdminService {
       return requests;
     }
     catch (e) {
-      throw new UnauthorizedException('Token expired or ' + e);
+      throw new UnauthorizedException(e);
     }
   }
 
@@ -63,7 +63,7 @@ export class AdminService {
       return request;
     }
     catch (e) {
-      throw new UnauthorizedException('Token expired or ' + e);
+      throw new UnauthorizedException(e);
     }
   }
 
@@ -74,7 +74,7 @@ export class AdminService {
       return request;
     }
     catch (e) {
-      throw new UnauthorizedException('Token expired or ' + e);
+      throw new UnauthorizedException(e);
     }
   }
 }

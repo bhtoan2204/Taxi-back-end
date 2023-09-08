@@ -11,8 +11,9 @@ export class CustomerInfoReceiverController {
 
   @EventPattern('get_booking_request')
   async getAllBookingRequest(@Ctx() context: RmqContext) {
-    const result = this.customerInfoReceiverService.getAllBookingRequest();
+    const result = await this.customerInfoReceiverService.getAllBookingRequest();
     this.rmqService.ack(context);
+    console.log(result);
     return result;
   }
 

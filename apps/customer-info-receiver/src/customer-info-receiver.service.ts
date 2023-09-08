@@ -13,7 +13,23 @@ export class CustomerInfoReceiverService {
     private readonly userRepository: UsersRepository
   ) { }
   async getAllBookingRequest() {
-    return await this.bookingRequestRepository.find({});
+    try {
+      const bookingRequests = await this.bookingRequestRepository.find({});
+      let results = []
+      for (let i = 0; i < bookingRequests.length; i++) {
+        let iterator = {
+          customer_name: "",
+          driver_name: "",
+          driver_phone: "",
+          ...bookingRequests[i]
+        }
+        results.push(iterator);
+      }
+      return results;
+    }
+    catch (e) {
+      throw e
+    }
   }
 
   async searchBookingRequest(text: string, offset?: number, limit?: number, startId?: number) {
@@ -25,7 +41,7 @@ export class CustomerInfoReceiverService {
         startId,
       );
       const ids = results.map((result) => result.id);
-      
+
       if (!ids.length) {
         return {
           items: [],
@@ -47,9 +63,7 @@ export class CustomerInfoReceiverService {
 
   async getBookingRequest(offset?: number, limit?: number, startId?: number) {
     try {
-      return await this.bookingRequestRepository.find({
-        
-      });
+      return await this.bookingRequestRepository.find({});
     }
     catch (e) {
       throw e;
@@ -70,10 +84,10 @@ export class CustomerInfoReceiverService {
     }
   }
 
-  async getHistory(_id: string){
+  async getHistory(_id: string) {
     const session = await this.bookingRequestRepository.startTransaction();
     try {
-      const bookingRequest = await this.bookingRequestRepository.find({customer_id: _id, status: Status.COMPLETED});
+      const bookingRequest = await this.bookingRequestRepository.find({ customer_id: _id, status: Status.COMPLETED });
       return bookingRequest;
     }
     catch (e) {
