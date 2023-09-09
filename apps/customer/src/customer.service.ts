@@ -73,4 +73,15 @@ export class CustomerService {
       throw e
     }
   }
+
+  async getDriverRate(driver_id: string){
+    try{
+      const check = this.trackerClient.send('get_rate_driver', {driver_id});
+      const requests = await lastValueFrom(check);
+      return requests;
+    }
+    catch(e){
+      throw e
+    }
+  }
 }

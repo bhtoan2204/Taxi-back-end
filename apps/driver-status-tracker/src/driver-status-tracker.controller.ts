@@ -23,4 +23,12 @@ export class DriverStatusTrackerController {
     this.rmqService.ack(context);
     return result;
   }
+
+  @EventPattern('get_rate_driver')
+  async getDriverRate(@Payload() data: any, @Ctx() context: RmqContext) {
+    console.log(data)
+    const result = this.driverStatusTrackerService.getDriverRate(data.driver_id);
+    this.rmqService.ack(context);
+    return result;
+  }
 }

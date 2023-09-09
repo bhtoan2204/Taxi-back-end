@@ -38,4 +38,16 @@ export class DriverStatusTrackerService {
       return tracker;
     }
   }
+
+  async getDriverRate(driver_id: string) {
+    try {
+      console.log(driver_id);
+      const statusTracker = await this.statusTrackerRepository.findOrFail({ driver_id: driver_id });
+      if (statusTracker === null) return { message: "Not Found" }
+      else return statusTracker.reliable;
+    }
+    catch (e) {
+      throw e;
+    }
+  }
 }

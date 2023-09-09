@@ -5,7 +5,7 @@ import { JwtAuthGuard } from '@app/common';
 import { CustomerGuard } from '@app/common/auth/customer.guard';
 import { LatLongDTO } from './dto/latlong.request';
 import { UserInforPayload } from './interface/userInfor.interface';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiQuery } from '@nestjs/swagger';
 import { RatingDTO } from './dto/rateDriver.request';
 
 @ApiTags('Customer')
@@ -54,5 +54,13 @@ export class CustomerController {
   @UseGuards(CustomerGuard)
   async rateDriver(@Body() dto: RatingDTO, @Headers('authentication') authentication: string){
     return this.customerService.rateDriver(dto);
+  }
+
+  @ApiQuery({ name: 'driver_id', description: 'Driver ID' })
+  @Get('driverRate')
+  @UseGuards(CustomerGuard)
+  async getDriverRate(@Query('driver_id') driver_id: string, @Headers('authentication') authentication: string){
+    console.log(driver_id);
+    return this.customerService.getDriverRate(driver_id);
   }
 }
