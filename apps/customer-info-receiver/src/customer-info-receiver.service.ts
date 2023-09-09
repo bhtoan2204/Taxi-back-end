@@ -239,6 +239,7 @@ export class CustomerInfoReceiverService {
               status: Status.COMPLETED
             }
           );
+          return result;
         }
       }
     }
