@@ -43,7 +43,7 @@ export class CustomerService {
 
   async getHistory(_id: string) {
     try {
-      const check = this.receiverClient.send('get_history', { _id });
+      const check = this.receiverClient.send('get_history_customer', { _id });
       const requests = await lastValueFrom(check);
       return requests;
     }

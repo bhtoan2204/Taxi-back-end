@@ -30,9 +30,16 @@ export class CustomerInfoReceiverController {
     return result;
   }
 
-  @EventPattern('get_history')
-  async getHistory(@Payload() data: any, @Ctx() context: RmqContext){
-    const result = this.customerInfoReceiverService.getHistory(data._id);
+  @EventPattern('get_history_customer')
+  async getHistoryCustomer(@Payload() data: any, @Ctx() context: RmqContext){
+    const result = this.customerInfoReceiverService.getHistoryCustomer(data._id);
+    this.rmqService.ack(context);
+    return result;
+  }
+
+  @EventPattern('get_history_driver')
+  async getHistoryDriver(@Payload() data: any, @Ctx() context: RmqContext){
+    const result = this.customerInfoReceiverService.getHistoryDriver(data._id);
     this.rmqService.ack(context);
     return result;
   }
@@ -61,6 +68,20 @@ export class CustomerInfoReceiverController {
   @EventPattern('get_driver_location')
   async getDriverLocation(@Payload() data: any, @Ctx() context: RmqContext){
     const result = this.customerInfoReceiverService.getDriverLocation(data.bookingId);
+    this.rmqService.ack(context);
+    return result;
+  }
+
+  @EventPattern('accept_booking_request')
+  async acceptBookingRequest(@Payload() data: any, @Ctx() context: RmqContext){
+    const result = this.customerInfoReceiverService.acceptBookingRequest(data.driver_id, data.booking_id);
+    this.rmqService.ack(context);
+    return result;
+  }
+
+  @EventPattern('set_completed')
+  async setCompleted(@Payload() data: any, @Ctx() context: RmqContext){
+    const result = this.customerInfoReceiverService.setCompleted(data.driver_id, data.booking_id);
     this.rmqService.ack(context);
     return result;
   }

@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { BookingRequestRepository } from 'apps/customer-info-receiver/src/repositories/bookingRequest.repository';
 import { Status } from '@app/common';
 import { SearchService } from '@app/common/elasticsearch/search.service';
@@ -87,7 +87,7 @@ export class CustomerInfoReceiverService {
     }
   }
 
-  async getHistory(_id: string) {
+  async getHistoryCustomer(_id: string) {
     const session = await this.bookingRequestRepository.startTransaction();
     try {
       const bookingRequest = await this.bookingRequestRepository.find({ customer_id: _id, status: Status.COMPLETED });
@@ -98,6 +98,19 @@ export class CustomerInfoReceiverService {
       throw e;
     }
   }
+
+  async getHistoryDriver(_id: string) {
+    const session = await this.bookingRequestRepository.startTransaction();
+    try {
+      const bookingRequest = await this.bookingRequestRepository.find({ driver_id: _id, status: Status.COMPLETED });
+      return bookingRequest;
+    }
+    catch (e) {
+      await session.abortTransaction();
+      throw e;
+    }
+  }
+
   async createBookingRequestByCustomer(data: any, _id: string) {
     const session = await this.bookingRequestRepository.startTransaction();
     try {
@@ -123,11 +136,11 @@ export class CustomerInfoReceiverService {
     }
   }
 
-  async getNearbyBookingRequest(dto: any){
+  async getNearbyBookingRequest(dto: any) {
     try {
-      const bookingRequest = await this.bookingRequestRepository.find({status: Status.PENDING});
+      const bookingRequest = await this.bookingRequestRepository.find({ status: Status.PENDING });
       const results = []
-      for (let i =0; i<bookingRequest.length; i++){
+      for (let i = 0; i < bookingRequest.length; i++) {
         let flight_distance = getDistance(dto.latitude, dto.longitude, bookingRequest[i].pickup_latitude, bookingRequest[i].pickup_longitude);
         flight_distance = +flight_distance.toFixed(2);
         let result = {
@@ -145,29 +158,29 @@ export class CustomerInfoReceiverService {
     }
   }
 
-  async getStatistics(){
+  async getStatistics() {
     try {
       const total_request = await this.bookingRequestRepository.count({});
-      const total_completed_request = await this.bookingRequestRepository.count({status: Status.COMPLETED});
+      const total_completed_request = await this.bookingRequestRepository.count({ status: Status.COMPLETED });
       const total_price = await this.bookingRequestRepository.calculateTotalPriceByQuery({});
-      const total_price_completed = await this.bookingRequestRepository.calculateTotalPriceByQuery({status: Status.COMPLETED});
+      const total_price_completed = await this.bookingRequestRepository.calculateTotalPriceByQuery({ status: Status.COMPLETED });
       let profit = total_price * 0.3;
       profit = +profit.toFixed(2);
-      
-      return {total_request, total_completed_request, total_price, total_price_completed, profit};
+
+      return { total_request, total_completed_request, total_price, total_price_completed, profit };
     }
     catch (e) {
       throw e;
     }
   }
 
-  async getDriverLocation(bookingId: string){
-    try{
-      const bookingRequest = await this.bookingRequestRepository.findOne({_id: bookingId});
-      if (!bookingRequest.driver_id){
+  async getDriverLocation(bookingId: string) {
+    try {
+      const bookingRequest = await this.bookingRequestRepository.findOne({ _id: bookingId });
+      if (!bookingRequest.driver_id) {
         throw new ConflictException('This Booking Request have not caught by any driver yet');
       }
-      const driver = await this.userRepository.findOne({_id: bookingRequest.driver_id});
+      const driver = await this.userRepository.findOne({ _id: bookingRequest.driver_id });
       return {
         driver_name: driver.full_name,
         driver_phone: driver.phone,
@@ -175,7 +188,61 @@ export class CustomerInfoReceiverService {
         driver_longitude: driver.longitude
       };
     }
-    catch(e){
+    catch (e) {
+      throw e;
+    }
+  }
+
+  async acceptBookingRequest(driver_id: string, booking_id: string) {
+    try {
+      const bookingRequest = await this.bookingRequestRepository.findOrFail({
+        _id: booking_id
+      })
+      if (bookingRequest === null) {
+        return new NotFoundException('Booking Request not found');
+      }
+      else {
+        if (bookingRequest.driver_id !== "") {
+          return new ConflictException('This Booking Request is already in another driver');
+        }
+        else {
+          const result = await this.bookingRequestRepository.findOneAndUpdate(
+            { _id: booking_id },
+            {
+              driver_id: driver_id,
+              status: Status.INPROGRESS
+            }
+          );
+          return result;
+        }
+      }
+    }
+    catch (e) {
+      throw e
+    }
+  }
+
+  async setCompleted(driver_id: string, booking_id: string) {
+    try {
+      const bookingRequest = await this.bookingRequestRepository.findOrFail({ _id: booking_id });
+      if (bookingRequest === null) {
+        return new NotFoundException('Booking Request not found');
+      }
+      else {
+        if (bookingRequest.driver_id !== driver_id) {
+          return new ConflictException('This driver has no permission to access this booking request')
+        }
+        else {
+          const result = await this.bookingRequestRepository.findOneAndUpdate(
+            { _id: booking_id },
+            {
+              status: Status.COMPLETED
+            }
+          );
+        }
+      }
+    }
+    catch (e) {
       throw e;
     }
   }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { StatusTrackerRepository } from './repositories/statusTracker.repository';
 import { float } from '@elastic/elasticsearch/api/types';
 
@@ -39,11 +39,15 @@ export class DriverStatusTrackerService {
     }
   }
 
-  async getDriverRate(driver_id: string) {
+  async getDriverRate(driver_id: any) {
     try {
-      console.log(driver_id);
-      const statusTracker = await this.statusTrackerRepository.findOrFail({ driver_id: driver_id });
-      if (statusTracker === null) return { message: "Not Found" }
+      const statusTracker = await this.statusTrackerRepository.findOrFail({
+        driver_id: driver_id
+      }
+      );
+      if (statusTracker === null) {
+        return new NotFoundException('Status Tracker Not found');
+      }
       else return statusTracker.reliable;
     }
     catch (e) {

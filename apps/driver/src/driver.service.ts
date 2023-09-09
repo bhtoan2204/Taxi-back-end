@@ -34,4 +34,36 @@ export class DriverService {
     }
   }
 
+  async acceptBookingRequest(driver_id: string, booking_id: string){
+    try{
+      const check = this.receiverClient.send('accept_booking_request', { driver_id, booking_id });
+      const requests = await lastValueFrom(check);
+      return requests;
+    }
+    catch(e){
+      throw e;
+    }
+  }
+
+  async getHistory(driver_id: string){
+    try{
+      const check = this.receiverClient.send('get_history_driver', { driver_id });
+      const requests = await lastValueFrom(check);
+      return requests;
+    }
+    catch(e){
+      throw e;
+    }
+  }
+
+  async setCompleted(driver_id: string, booking_id: string){
+    try{
+      const check = this.receiverClient.send('set_completed', { driver_id, booking_id });
+      const requests = await lastValueFrom(check);
+      return requests;
+    }
+    catch(e){
+      throw e;
+    }
+  }
 }
