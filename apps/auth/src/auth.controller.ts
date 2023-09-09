@@ -1,6 +1,5 @@
-import { Controller, Post, Res, UseGuards, Req, Body } from '@nestjs/common';
+import { Controller, Post, UseGuards, Req, Body, Headers } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
-import { Request } from 'express';
 import { AuthService, TokenPayload } from './auth.service';
 import { CurrentUser } from './current-user.decorator';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
@@ -31,7 +30,7 @@ export class AuthController {
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
   async refresh(
-    @Req() request) {
+    @Req() request, @Headers('authentication') authentication: string) {
     const user = request.user;
     return this.authService.refresh(user, request.headers.authentication);
   }

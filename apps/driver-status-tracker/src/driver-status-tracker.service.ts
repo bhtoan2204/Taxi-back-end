@@ -1,18 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { StatusTrackerRepository } from './repositories/statusTracker.repository';
+import { float } from '@elastic/elasticsearch/api/types';
 
 @Injectable()
 export class DriverStatusTrackerService {
   constructor(
     private readonly statusTrackerRepository: StatusTrackerRepository,
   ) { }
-
-  getHello(): string {
-    return 'Hello World!';
-  }
-
-  async getMessage(data: any) {
-  }
 
   async getAllTrackers(): Promise<any> {
     const sortOptions = { start_time: -1 };
@@ -21,16 +15,27 @@ export class DriverStatusTrackerService {
     return trackers;
   }
 
-  async createTrackerInRepository(data: any) {
-    const session = await this.statusTrackerRepository.startTransaction();
-    try {
-      const tracker = await this.statusTrackerRepository.create(data, { session });
-      await session.commitTransaction();
+  async addRating(data: any) {
+    const driver_id = data.driver_id;
+    const rate = data.rate as float;
+    let tracker = await this.statusTrackerRepository.findOrFail({ driver_id });
+    if (!tracker) {
+      tracker = await this.statusTrackerRepository.create({
+        driver_id: data.driver_id,
+        reliable: 0,
+        ratings: [rate]
+      });
       return tracker;
     }
-    catch (e) {
-      await session.abortTransaction();
-      throw e;
+    else {
+      let ratings = [...tracker.ratings, rate] as float[];
+      const average = (ratings.reduce((acc, val) => acc + val, 0)) / ratings.length;
+
+      tracker = await this.statusTrackerRepository.findOneAndUpdate({ driver_id: driver_id }, {
+        ratings: ratings,
+        reliable: average.toFixed(2)
+      });
+      return tracker;
     }
   }
 }

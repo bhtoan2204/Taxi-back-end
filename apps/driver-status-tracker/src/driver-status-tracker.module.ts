@@ -22,7 +22,7 @@ import { StatusTracker, StatusTrackerSchema } from './schemas/statusTracker.sche
     RmqModule,
     AuthModule,
     DatabaseModule,
-    MongooseModule.forFeature([{ name: StatusTracker.name, schema: StatusTrackerSchema }]),
+    MongooseModule.forFeature([{ name: StatusTracker.name, schema: StatusTrackerSchema }])
   ],
   controllers: [DriverStatusTrackerController],
   providers: [

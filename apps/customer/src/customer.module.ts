@@ -10,7 +10,7 @@ import { BookingRequest, BookingRequestSchema } from './schema/bookingRequest.sc
 import { ElasticsearchModule } from '@nestjs/elasticsearch';
 import { UsersRepository } from './repositories/users.repository';
 import { User, UserSchema } from './schema/users.schema';
-import { LOCATE_SERVICE, RECEIVER_SERVICE } from './constant/services';
+import { LOCATE_SERVICE, RECEIVER_SERVICE, TRACKER_SERVICE } from './constant/services';
 import { SearchService } from '@app/common/elasticsearch/search.service';
 
 @Module({
@@ -25,8 +25,6 @@ import { SearchService } from '@app/common/elasticsearch/search.service';
         envFilePath: './apps/customer/.env'
       }
     ),
-    MongooseModule.forFeature([{ name: BookingRequest.name, schema: BookingRequestSchema }]),
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     DatabaseModule,
     RmqModule.register({
       name: RECEIVER_SERVICE
@@ -34,25 +32,13 @@ import { SearchService } from '@app/common/elasticsearch/search.service';
     RmqModule.register({
       name: LOCATE_SERVICE
     }),
-    AuthModule,
-    ElasticsearchModule.registerAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        cloud: {
-          id: configService.get('ELASTICSEARCH_NODE')
-        },
-        auth: {
-          username: configService.get('ELASTICSEARCH_USERNAME'),
-          password: configService.get('ELASTICSEARCH_PASSWORD'),
-        },
-      }),
-      inject: [ConfigService],
-    })],
+    RmqModule.register({
+      name: TRACKER_SERVICE
+    }),
+    AuthModule
+  ],
   controllers: [CustomerController],
   providers: [
-    CustomerService,
-    BookingRequestRepository,
-    SearchService,
-    UsersRepository],
+    CustomerService],
 })
-export class CustomerModule {}
+export class CustomerModule { }

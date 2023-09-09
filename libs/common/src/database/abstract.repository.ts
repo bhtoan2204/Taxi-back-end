@@ -40,6 +40,16 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
 
     return document;
   }
+  
+  async findOrFail(filterQuery: FilterQuery<TDocument>) {
+    const document = await this.model.findOne(filterQuery, {}, { lean: true });
+
+    if (!document) {
+      return null;
+    }
+
+    return document;
+  }
 
   async findOneAndUpdate(
     filterQuery: FilterQuery<TDocument>,

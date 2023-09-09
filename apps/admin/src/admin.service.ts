@@ -2,7 +2,6 @@ import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { LOCATE_SERVICE, RECEIVER_SERVICE, TRACKER_SERVICE } from './constants/services';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
-import { CreateTracker } from './dto/createTracker.request';
 import { CreateBookingRequest } from './dto/createBookingRequest.request';
 
 @Injectable()
@@ -12,16 +11,6 @@ export class AdminService {
     @Inject(LOCATE_SERVICE) private locateClient: ClientProxy,
     @Inject(TRACKER_SERVICE) private trackerClient: ClientProxy,
   ) { }
-
-  async createTracker(dto: CreateTracker) {
-    try {
-      const check = this.trackerClient.send('create_tracker', { dto });
-      const tracker = await lastValueFrom(check);
-      return tracker;
-    } catch (e) {
-      throw new UnauthorizedException(e);
-    }
-  }
 
   async getAllBookingRequests() {
     try {

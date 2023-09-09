@@ -25,8 +25,8 @@ export class UsersService {
             password: await bcrypt.hash(request.password, 10),
             full_name: request.full_name,
             role: request.role,
-            longitude: null,
-            latitude: null,
+            longitude: 0,
+            latitude: 0,
             is_Vip: false,
             total_booking: 0
         });
