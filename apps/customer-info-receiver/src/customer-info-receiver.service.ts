@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { BookingRequestRepository } from 'apps/customer-info-receiver/src/repositories/bookingRequest.repository';
 import { Status } from '@app/common';
 import { SearchService } from '@app/common/elasticsearch/search.service';
@@ -157,6 +157,25 @@ export class CustomerInfoReceiverService {
       return {total_request, total_completed_request, total_price, total_price_completed, profit};
     }
     catch (e) {
+      throw e;
+    }
+  }
+
+  async getDriverLocation(bookingId: string){
+    try{
+      const bookingRequest = await this.bookingRequestRepository.findOne({_id: bookingId});
+      if (!bookingRequest.driver_id){
+        throw new ConflictException('This Booking Request have not caught by any driver yet');
+      }
+      const driver = await this.userRepository.findOne({_id: bookingRequest.driver_id});
+      return {
+        driver_name: driver.full_name,
+        driver_phone: driver.phone,
+        driver_lattitude: driver.latitude,
+        driver_longitude: driver.longitude
+      };
+    }
+    catch(e){
       throw e;
     }
   }

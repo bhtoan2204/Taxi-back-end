@@ -3,7 +3,7 @@ import { BookingRequestRepository } from './repositories/bookingRequest.reposito
 import { CreateBookingRequest } from './dto/createBookingRequest.request';
 import { SearchService } from '@app/common/elasticsearch/search.service';
 import { UsersRepository } from './repositories/users.repository';
-import { LOCATE_SERVICE, RECEIVER_SERVICE } from '../constant/services';
+import { LOCATE_SERVICE, RECEIVER_SERVICE } from './constant/services';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 
@@ -49,7 +49,18 @@ export class CustomerService {
       return requests;
     }
     catch (e) {
-      throw new UnauthorizedException('Token expired or ' + e);
+      throw e;
+    }
+  }
+
+  async getDriverLocation(bookingId: string){
+    try{
+      const check = this.locateClient.send('get_driver_location', { bookingId });
+      const requests = await lastValueFrom(check);
+      return requests;
+    }
+    catch(e){
+      throw e
     }
   }
 }

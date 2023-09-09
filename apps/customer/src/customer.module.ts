@@ -10,7 +10,7 @@ import { BookingRequest, BookingRequestSchema } from './schema/bookingRequest.sc
 import { ElasticsearchModule } from '@nestjs/elasticsearch';
 import { UsersRepository } from './repositories/users.repository';
 import { User, UserSchema } from './schema/users.schema';
-import { LOCATE_SERVICE, RECEIVER_SERVICE } from '../constant/services';
+import { LOCATE_SERVICE, RECEIVER_SERVICE } from './constant/services';
 import { SearchService } from '@app/common/elasticsearch/search.service';
 
 @Module({

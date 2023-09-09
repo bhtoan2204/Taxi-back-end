@@ -57,4 +57,11 @@ export class CustomerInfoReceiverController {
     this.rmqService.ack(context);
     return result;
   }
+
+  @EventPattern('get_driver_location')
+  async getDriverLocation(@Payload() data: any, @Ctx() context: RmqContext){
+    const result = this.customerInfoReceiverService.getDriverLocation(data.bookingId);
+    this.rmqService.ack(context);
+    return result;
+  }
 }
