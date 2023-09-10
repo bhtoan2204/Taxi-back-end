@@ -19,9 +19,9 @@ export class CreateUserRequest {
   @ApiProperty({ example: "Nguyen Van A" })
   full_name: string;
   
-  @IsEnum(Role)
+  @IsString()
+  @IsEnum(Role, {each: true})
   @IsNotEmpty()
   @ApiProperty({ example: "CUSTOMER"})
   role: Role
-
 }

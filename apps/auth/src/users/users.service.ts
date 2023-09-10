@@ -30,7 +30,7 @@ export class UsersService {
             is_Vip: false,
             total_booking: 0
         });
-        return user;
+        return request;
     }
 
     private async validateCreateUserRequest(request: CreateUserRequest) {
@@ -44,8 +44,8 @@ export class UsersService {
         if (user) {
             throw new UnprocessableEntityException('Phone already exists.');
         }
-
-        if (user.role == Role.ADMIN){
+        
+        if (request.role == Role.ADMIN){
             throw new UnprocessableEntityException('Admin can not be created.');
         }
     }
