@@ -5,8 +5,9 @@ import { JwtAuthGuard } from '@app/common';
 import { CustomerGuard } from '@app/common/auth/customer.guard';
 import { LatLongDTO } from './dto/latlong.request';
 import { UserInforPayload } from './interface/userInfor.interface';
-import { ApiTags, ApiQuery } from '@nestjs/swagger';
+import { ApiTags, ApiQuery, ApiBody } from '@nestjs/swagger';
 import { RatingDTO } from './dto/rateDriver.request';
+import { BookingRequestId } from './dto/bookingRequestId.request';
 
 @ApiTags('Customer')
 @UseGuards(JwtAuthGuard)
@@ -43,11 +44,10 @@ export class CustomerController {
     return this.customerService.getHistory(_id);
   }
 
-
   @Get('getDriverLocationByBR')
   @UseGuards(CustomerGuard)
-  async getDriverLocation(@Body() bookingId: string, @Headers('authentication') authentication: string){
-    return this.customerService.getDriverLocation(bookingId);
+  async getDriverLocation(@Body() dto: BookingRequestId, @Headers('authentication') authentication: string){
+    return this.customerService.getDriverLocation(dto.booking_id);
   }
 
   @Post('rateDriver')

@@ -8,6 +8,8 @@ import { UsersRepository } from './repositories/users.repository';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './schema/users.schema';
 import { HttpModule } from '@nestjs/axios';
+import { BookingRequestRepository } from './repositories/bookingRequest.repository';
+import { BookingRequest, BookingRequestSchema } from './schema/bookingRequest.schema';
 
 @Module({
   imports: [
@@ -25,6 +27,7 @@ import { HttpModule } from '@nestjs/axios';
     }),
     DatabaseModule,
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    MongooseModule.forFeature([{ name: BookingRequest.name, schema: BookingRequestSchema }]),
     RmqModule,
     AuthModule,
     HttpModule.registerAsync({
@@ -39,6 +42,7 @@ import { HttpModule } from '@nestjs/axios';
   controllers: [CustomerAddressPositioningController],
   providers: [
     CustomerAddressPositioningService,
-    UsersRepository],
+    UsersRepository,
+    BookingRequestRepository],
 })
 export class CustomerAddressPositioningModule { }

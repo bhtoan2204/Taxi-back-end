@@ -7,19 +7,26 @@ import { RmqService } from '@app/common';
 export class CustomerAddressPositioningController {
   constructor(
     private readonly customerAddressPositioningService: CustomerAddressPositioningService,
-    private readonly rmqService: RmqService) {}
+    private readonly rmqService: RmqService) { }
 
-    @EventPattern('set_LatLong')
-    async locateUser(@Payload() data: any, @Ctx() context: RmqContext){
-      const result = this.customerAddressPositioningService.setLatLong(data._id, data.dto);
-      this.rmqService.ack(context);
-      return result;
-    }
+  @EventPattern('set_LatLong')
+  async locateUser(@Payload() data: any, @Ctx() context: RmqContext) {
+    const result = this.customerAddressPositioningService.setLatLong(data._id, data.dto);
+    this.rmqService.ack(context);
+    return result;
+  }
 
-    @EventPattern('get_geo_coding')
-    async getGeoCoding(@Payload() data: any, @Ctx() context: RmqContext){
-      const result = this.customerAddressPositioningService.getGeoCoding(data.address);
-      this.rmqService.ack(context);
-      return result
-    }
+  @EventPattern('get_geo_coding')
+  async getGeoCoding(@Payload() data: any, @Ctx() context: RmqContext) {
+    const result = this.customerAddressPositioningService.getGeoCoding(data.address);
+    this.rmqService.ack(context);
+    return result
+  }
+
+  @EventPattern('get_driver_location')
+  async getDriverLocation(@Payload() data: any, @Ctx() context: RmqContext) {
+    const result = this.customerAddressPositioningService.getDriverLocation(data.bookingId);
+    this.rmqService.ack(context);
+    return result;
+  }
 }

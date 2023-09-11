@@ -177,25 +177,6 @@ export class CustomerInfoReceiverService {
     }
   }
 
-  async getDriverLocation(bookingId: string) {
-    try {
-      const bookingRequest = await this.bookingRequestRepository.findOne({ _id: bookingId });
-      if (!bookingRequest.driver_id) {
-        throw new ConflictException('This Booking Request have not caught by any driver yet');
-      }
-      const driver = await this.userRepository.findOne({ _id: bookingRequest.driver_id });
-      return {
-        driver_name: driver.full_name,
-        driver_phone: driver.phone,
-        driver_lattitude: driver.latitude,
-        driver_longitude: driver.longitude
-      };
-    }
-    catch (e) {
-      throw e;
-    }
-  }
-
   async acceptBookingRequest(driver_id: string, booking_id: string) {
     try {
       const bookingRequest = await this.bookingRequestRepository.findOrFail({
