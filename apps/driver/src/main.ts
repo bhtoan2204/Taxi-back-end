@@ -3,11 +3,14 @@ import { DriverModule } from './driver.module';
 import { ValidationPipe } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { AuthenticatedSocketAdapter } from './sockets/authenticated-sockets.adapter';
 
 async function bootstrap() {
   const app = await NestFactory.create(DriverModule);
   app.useGlobalPipes(new ValidationPipe());
   const configService = app.get(ConfigService);
+
+  app.useWebSocketAdapter(new AuthenticatedSocketAdapter(app))
 
   const configSwagger = new DocumentBuilder()
     .setTitle('Driver')
@@ -44,6 +47,7 @@ async function bootstrap() {
     methods: '*',
     allowedHeaders: '*',
   });
+  
 
   await app.listen(configService.get('PORT'));
 }

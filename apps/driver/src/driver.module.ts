@@ -8,6 +8,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UsersRepository } from './repositories/users.repository';
 import { User, UserSchema } from './schema/users.schema';
 import { LOCATE_SERVICE, RECEIVER_SERVICE } from './constants/services';
+import { SocketsGateway } from './sockets/sockets.gateway';
 
 @Module({
   imports: [
@@ -30,6 +31,6 @@ import { LOCATE_SERVICE, RECEIVER_SERVICE } from './constants/services';
     }),
   ],
   controllers: [DriverController],
-  providers: [DriverService, UsersRepository],
+  providers: [DriverService, UsersRepository, SocketsGateway],
 })
 export class DriverModule {}

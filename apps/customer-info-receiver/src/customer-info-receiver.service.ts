@@ -138,7 +138,10 @@ export class CustomerInfoReceiverService {
 
   async getNearbyBookingRequest(dto: any) {
     try {
-      const bookingRequest = await this.bookingRequestRepository.find({ status: Status.PENDING });
+      const bookingRequest = await this.bookingRequestRepository.find({ 
+        status: Status.PENDING,
+        booking_time: {$lt: new Date()}
+      });
       const results = []
       for (let i = 0; i < bookingRequest.length; i++) {
         let flight_distance = getDistance(dto.latitude, dto.longitude, bookingRequest[i].pickup_latitude, bookingRequest[i].pickup_longitude);

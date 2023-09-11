@@ -46,7 +46,7 @@ export class CustomerController {
 
   @Get('getDriverLocationByBR')
   @UseGuards(CustomerGuard)
-  async getDriverLocation(@Query() bookingId: string, @Headers('authentication') authentication: string){
+  async getDriverLocation(@Body() bookingId: string, @Headers('authentication') authentication: string){
     return this.customerService.getDriverLocation(bookingId);
   }
 
