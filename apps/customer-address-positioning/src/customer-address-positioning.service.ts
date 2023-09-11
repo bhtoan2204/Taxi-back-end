@@ -49,7 +49,7 @@ export class CustomerAddressPositioningService {
       return {
         driver_name: driver.full_name,
         driver_phone: driver.phone,
-        driver_lattitude: driver.latitude,
+        driver_latitude: driver.latitude,
         driver_longitude: driver.longitude
       };
     }
