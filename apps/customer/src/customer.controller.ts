@@ -44,7 +44,7 @@ export class CustomerController {
     return this.customerService.getHistory(_id);
   }
 
-  @Get('getDriverLocationByBR')
+  @Post('getDriverLocationByBR')
   @UseGuards(CustomerGuard)
   async getDriverLocation(@Body() dto: BookingRequestId, @Headers('authentication') authentication: string){
     return this.customerService.getDriverLocation(dto.booking_id);
