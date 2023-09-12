@@ -46,6 +46,7 @@ export class CustomerAddressPositioningService {
       }
       const driver = await this.userRepository.findOne({ _id: bookingRequest.driver_id });
       return {
+        _id: driver._id,
         driver_name: driver.full_name,
         driver_phone: driver.phone,
         driver_latitude: driver.latitude,
