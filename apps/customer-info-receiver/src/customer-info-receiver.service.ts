@@ -88,13 +88,11 @@ export class CustomerInfoReceiverService {
   }
 
   async getHistoryCustomer(_id: string) {
-    const session = await this.bookingRequestRepository.startTransaction();
     try {
       const bookingRequest = await this.bookingRequestRepository.find({ customer_id: _id, status: Status.COMPLETED });
       return bookingRequest;
     }
     catch (e) {
-      await session.abortTransaction();
       throw e;
     }
   }
