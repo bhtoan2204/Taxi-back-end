@@ -30,7 +30,6 @@ export class CustomerAddressPositioningService {
       const response = await this.httpService.axiosRef.get(
         `https://api.openrouteservice.org/geocode/search?api_key=${this.configService.get('API_KEY')}&text=${dto.address}&boundary.country=VN&size=1`,
       );
-      console.log(response.data);
       const longitude = response.data.features[0].geometry.coordinates[0];
       const latitude = response.data.features[0].geometry.coordinates[1];
       return { latitude, longitude };

@@ -60,7 +60,6 @@ export class CustomerController {
   @Get('driverRate')
   @UseGuards(CustomerGuard)
   async getDriverRate(@Query('driver_id') driver_id: string, @Headers('authentication') authentication: string){
-    console.log(driver_id);
     return this.customerService.getDriverRate(driver_id);
   }
 }

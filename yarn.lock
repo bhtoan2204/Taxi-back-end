@@ -904,15 +904,6 @@
   dependencies:
     tslib "2.6.2"
 
-"@nestjs/websockets@^10.2.4":
-  version "10.2.4"
-  resolved "https://registry.yarnpkg.com/@nestjs/websockets/-/websockets-10.2.4.tgz#9cc6aadf8a15135dbfbafcf9508c698266d3db05"
-  integrity sha512-UGvm9CL5dyE6ZF7y2J0xiK8Atk2+F99hn8ux2OWZyg9pL5pQMg+reVkh2rn7j7ZGEVvqzT1vQ4woT5eT0FOzIQ==
-  dependencies:
-    iterare "1.2.1"
-    object-hash "3.0.0"
-    tslib "2.6.2"
-
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.npmjs.org/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz"
@@ -6657,11 +6648,6 @@ object-copy@^0.1.0:
     copy-descriptor "^0.1.0"
     define-property "^0.2.5"
     kind-of "^3.0.3"
-
-object-hash@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/object-hash/-/object-hash-3.0.0.tgz#73f97f753e7baffc0e2cc9d6e079079744ac82e9"
-  integrity sha512-RSn9F68PjH9HqtltsSnqYC1XXoWe9Bju5+213R98cNGttag9q9yAOTzdbsqvIa7aNm5WffBZFpWYr2aWrklWAw==
 
 object-inspect@^1.9.0:
   version "1.12.3"

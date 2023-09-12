@@ -39,7 +39,7 @@ export class CustomerInfoReceiverController {
 
   @EventPattern('get_history_driver')
   async getHistoryDriver(@Payload() data: any, @Ctx() context: RmqContext){
-    const result = this.customerInfoReceiverService.getHistoryDriver(data._id);
+    const result = this.customerInfoReceiverService.getHistoryDriver(data.driver_id);
     this.rmqService.ack(context);
     return result;
   }
