@@ -4,6 +4,7 @@ import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { Twilio } from 'twilio';
 import { ConfigService } from '@nestjs/config';
+import { FirebaseService } from '@app/common/firebase/firebase.service';
 
 @Injectable()
 export class DriverService {
@@ -11,7 +12,8 @@ export class DriverService {
   constructor(
     @Inject(LOCATE_SERVICE) private locateClient: ClientProxy,
     @Inject(RECEIVER_SERVICE) private receiverClient: ClientProxy,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
+    private readonly firebaseService: FirebaseService
   ) {
     const accountSid = configService.get('TWILIO_ACCOUNT_SID');
     const authToken = configService.get('TWILIO_AUTH_TOKEN');
@@ -29,6 +31,29 @@ export class DriverService {
     }
     catch (e) {
       return { message: "Lỗi khi gửi tin nhắn: " + e }
+    }
+  }
+
+  async sendNotification(customer_id: string, driver: UserInforPayload) {
+    try {
+      const database = this.firebaseService.getAdmin().database();
+      const usersRef = database.ref('users');
+      usersRef.once('value')
+        .then((snapshot) => {
+          const users = snapshot.val();
+
+          for (const userId in users) {
+            const user = users[userId];
+            const fcmToken = user.fcm_token;
+            this.firebaseService.sendNotificationToUser(fcmToken, "Taxi Thông báo", driver.full_name + " sẽ là tài xế của bạn.\nHãy liên lạc qua số điện thoại " + driver.phone);
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching FCM tokens:', error);
+        });
+    }
+    catch (e) {
+      throw e;
     }
   }
 

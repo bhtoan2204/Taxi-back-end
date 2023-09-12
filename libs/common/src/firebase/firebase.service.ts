@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { error } from 'console';
 import * as admin from 'firebase-admin';
 
 @Injectable()
@@ -34,4 +35,22 @@ export class FirebaseService {
     return this.firebaseAdmin;
   }
 
+  public sendNotificationToUser(deviceToken: string, title: string, body: string) {
+    const message = {
+      data: {
+        title,
+        body,
+      },
+      token: deviceToken, // Định danh thiết bị của người dùng
+    };
+    return this.firebaseAdmin.messaging().send(message)
+      .then((response) => {
+        console.log('Successfully sent message:', response);
+        return response;
+      })
+      .catch((error) => {
+        console.error('Error sending message:', error);
+        throw error;
+      });
+  }
 }

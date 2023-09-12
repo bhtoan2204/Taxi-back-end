@@ -2,10 +2,11 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { DriverController } from './driver.controller';
 import { DriverService } from './driver.service';
 import { ConfigModule } from '@nestjs/config';
-import * as Joi from 'joi';
 import { AuthModule, DatabaseModule, RmqModule } from '@app/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { LOCATE_SERVICE, RECEIVER_SERVICE } from './constants/services';
+import { FirebaseService } from '@app/common/firebase/firebase.service';
+import * as Joi from 'joi';
 
 @Module({
   imports: [
@@ -31,6 +32,6 @@ import { LOCATE_SERVICE, RECEIVER_SERVICE } from './constants/services';
     }),
   ],
   controllers: [DriverController],
-  providers: [DriverService],
+  providers: [DriverService, FirebaseService],
 })
 export class DriverModule {}

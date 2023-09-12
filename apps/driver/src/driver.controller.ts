@@ -6,6 +6,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { UserInforPayload } from './constants/services';
 import { LatLongDTO } from './dto/latlong.request';
 import { PhoneDTO } from './dto/sendSMS.request';
+import { CustomerIdDTO } from './dto/customerId.request';
 
 @ApiTags('Driver')
 @Controller()
@@ -60,5 +61,12 @@ export class DriverController {
   async sendSMS(@Body() dto: PhoneDTO, @Req() request, @Headers('authentication') authentication: string){
     const driver = request.user as UserInforPayload;
     return this.driverService.sendSms(dto.phone, driver);
+  }
+
+  @Post('sendNotification')
+  @UseGuards(DriverGuard)
+  async sendNotification(@Body() dto: CustomerIdDTO, @Req() request, @Headers('authentication') authentication: string){
+    const driver = request.user as UserInforPayload;
+    return this.driverService.sendNotification(dto.customer_id, driver);
   }
 }

@@ -10,11 +10,13 @@ import { CreateUserRequest } from './dto/create-user.request';
 import { User } from './schemas/users.schema';
 import { LatLongRequest } from './dto/latlong-request';
 import { Role } from '@app/common';
+import { FirebaseService } from '@app/common/firebase/firebase.service';
 
 @Injectable()
 export class UsersService {
     constructor(
-        private readonly usersRepository: UsersRepository) { }
+        private readonly usersRepository: UsersRepository,
+        private readonly firebaseService: FirebaseService) { }
 
     async createUser(request: CreateUserRequest) {
         await this.validateCreateUserRequest(request);
@@ -28,6 +30,9 @@ export class UsersService {
             is_Vip: false,
             total_booking: 0
         });
+        const firebaseAdmin = this.firebaseService.getAdmin();
+        const database = firebaseAdmin.database();
+        const ref = database.ref('users').child(user._id.toString()).set(user);
         return request;
     }
 

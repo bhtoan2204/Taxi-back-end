@@ -5,6 +5,7 @@ import { UsersService } from './users.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './schemas/users.schema';
 import { AuthModule } from '@app/common';
+import { FirebaseService } from '@app/common/firebase/firebase.service';
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import { AuthModule } from '@app/common';
     AuthModule,
   ],
   controllers: [UsersController],
-  providers: [UsersService, UsersRepository],
+  providers: [UsersService, UsersRepository, FirebaseService],
   exports: [UsersService],
 })
 export class UsersModule {}
