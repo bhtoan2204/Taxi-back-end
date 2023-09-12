@@ -24,6 +24,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/customer-reliability/tsconfig.app.json"
       }
+    },
+    "revenue": {
+      "type": "application",
+      "root": "apps/revenue",
+      "entryFile": "main",
+      "sourceRoot": "apps/revenue/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/revenue/tsconfig.app.json"
+      }
     }
   }
 }

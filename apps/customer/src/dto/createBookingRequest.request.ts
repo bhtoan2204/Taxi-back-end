@@ -4,10 +4,6 @@ import { IsString, IsNumber, IsPhoneNumber, IsDateString, IsEnum } from 'class-v
 
 export class CreateBookingRequest {
     @ApiProperty()
-    @IsString()
-    driver_id: string;
-
-    @ApiProperty()
     @IsEnum(Status) 
     status: Status;
 

@@ -57,20 +57,6 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules
 
-  customer-reliability:
-    build:
-      context: .
-      dockerfile: ./apps/customer-reliability/Dockerfile
-      target: development
-    command: yarn run start:dev customer-reliability
-    depends_on:
-      - auth
-    env_file:
-      - ./apps/customer-reliability/.env
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-
   auth:
     build: 
       context: .

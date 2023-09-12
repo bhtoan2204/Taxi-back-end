@@ -123,6 +123,7 @@ export class CustomerInfoReceiverService {
     try {
       const bookingRequest = await this.bookingRequestRepository.create({
         customer_id: _id,
+        driver_id:"",
         ...data
       }, { session });
       const user = await this.userRepository.findOne({ _id: _id });
