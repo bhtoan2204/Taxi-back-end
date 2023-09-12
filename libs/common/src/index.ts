@@ -18,6 +18,7 @@ export enum CarType {
 }
 
 export enum Status {
+    CANCEL = "CANCEL",
     PENDING = "PENDING",
     CONFIRM = "CONFIRM",
     INPROGRESS = "INPROGRESS",

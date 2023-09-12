@@ -1,18 +1,38 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { UsersRepository } from './repositories/users.repository';
-import { LOCATE_SERVICE, RECEIVER_SERVICE } from './constants/services';
+import { LOCATE_SERVICE, RECEIVER_SERVICE, UserInforPayload } from './constants/services';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
+import { Twilio } from 'twilio';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class DriverService {
+  private twilioClient: Twilio;
   constructor(
-    private readonly userRepository: UsersRepository,
     @Inject(LOCATE_SERVICE) private locateClient: ClientProxy,
     @Inject(RECEIVER_SERVICE) private receiverClient: ClientProxy,
-    ) { }
+    private readonly configService: ConfigService
+  ) {
+    const accountSid = configService.get('TWILIO_ACCOUNT_SID');
+    const authToken = configService.get('TWILIO_AUTH_TOKEN');
+    this.twilioClient = new Twilio(accountSid, authToken)
+  }
 
-  async setLatLong(_id: string, dto: any){
+  async sendSms(phone: string, driver: UserInforPayload) {
+    try {
+      await this.twilioClient.messages.create({
+        to: phone,
+        from: this.configService.get('TWILIO_PHONE_NUMBER'),
+        body: "Tài xế " + driver.full_name + " sẽ là tài xế của bạn. Vui lòng liên lạc qua số điện thoại: " + driver.phone
+      })
+      return { message: "Gửi tin nhắn thành công" }
+    }
+    catch (e) {
+      return { message: "Lỗi khi gửi tin nhắn: " + e }
+    }
+  }
+
+  async setLatLong(_id: string, dto: any) {
     try {
       const check = this.locateClient.send('set_LatLong', { _id, dto });
       const requests = await lastValueFrom(check);
@@ -23,7 +43,7 @@ export class DriverService {
     }
   }
 
-  async getNearBookingRequest(dto: any){
+  async getNearBookingRequest(dto: any) {
     try {
       const check = this.receiverClient.send('get_nearby_booking_requests', { dto });
       const requests = await lastValueFrom(check);
@@ -34,35 +54,35 @@ export class DriverService {
     }
   }
 
-  async acceptBookingRequest(driver_id: string, booking_id: string){
-    try{
+  async acceptBookingRequest(driver_id: string, booking_id: string) {
+    try {
       const check = this.receiverClient.send('accept_booking_request', { driver_id, booking_id });
       const requests = await lastValueFrom(check);
       return requests;
     }
-    catch(e){
+    catch (e) {
       throw e;
     }
   }
 
-  async getHistory(driver_id: string){
-    try{
+  async getHistory(driver_id: string) {
+    try {
       const check = this.receiverClient.send('get_history_driver', { driver_id });
       const requests = await lastValueFrom(check);
       return requests;
     }
-    catch(e){
+    catch (e) {
       throw e;
     }
   }
 
-  async setCompleted(driver_id: string, booking_id: string){
-    try{
+  async setCompleted(driver_id: string, booking_id: string) {
+    try {
       const check = this.receiverClient.send('set_completed', { driver_id, booking_id });
       const requests = await lastValueFrom(check);
       return requests;
     }
-    catch(e){
+    catch (e) {
       throw e;
     }
   }

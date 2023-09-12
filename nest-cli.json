@@ -81,6 +81,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/customer-address-positioning/tsconfig.app.json"
       }
+    },
+    "customer-reliability": {
+      "type": "application",
+      "root": "apps/customer-reliability",
+      "entryFile": "main",
+      "sourceRoot": "apps/customer-reliability/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/customer-reliability/tsconfig.app.json"
+      }
     }
   }
 }

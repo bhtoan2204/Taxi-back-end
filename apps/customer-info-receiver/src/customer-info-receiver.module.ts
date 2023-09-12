@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { CustomerInfoReceiverController } from './customer-info-receiver.controller';
 import { CustomerInfoReceiverService } from './customer-info-receiver.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import * as Joi from 'joi';
 import { AuthModule, DatabaseModule, RmqModule } from '@app/common';
 import { BookingRequest, BookingRequestSchema } from 'apps/customer-info-receiver/src/schema/bookingRequest.schema';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -11,6 +10,8 @@ import { ElasticsearchModule } from '@nestjs/elasticsearch';
 import { SearchService } from '@app/common/elasticsearch/search.service';
 import { UsersRepository } from './repositories/users.repository';
 import { User, UserSchema } from './schema/users.schema';
+import { FirebaseService } from '@app/common/firebase/firebase.service';
+import * as Joi from 'joi';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { User, UserSchema } from './schema/users.schema';
     CustomerInfoReceiverService,
     BookingRequestRepository,
     SearchService,
+    FirebaseService,
     UsersRepository
   ],
 })

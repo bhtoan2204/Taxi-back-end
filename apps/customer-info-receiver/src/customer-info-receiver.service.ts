@@ -3,6 +3,7 @@ import { BookingRequestRepository } from 'apps/customer-info-receiver/src/reposi
 import { Status } from '@app/common';
 import { SearchService } from '@app/common/elasticsearch/search.service';
 import { UsersRepository } from './repositories/users.repository';
+import { FirebaseService } from '@app/common/firebase/firebase.service';
 
 
 function getDistance(fromLat: number, fromLong: number, toLat: number, toLong: number) {
@@ -29,7 +30,8 @@ export class CustomerInfoReceiverService {
   constructor(
     private readonly bookingRequestRepository: BookingRequestRepository,
     private readonly searchService: SearchService,
-    private readonly userRepository: UsersRepository
+    private readonly userRepository: UsersRepository,
+    private readonly firebaseService: FirebaseService
   ) { }
   async getAllBookingRequest() {
     return await this.bookingRequestRepository.find({});
@@ -76,10 +78,17 @@ export class CustomerInfoReceiverService {
   async createBookingRequest(data: any) {
     const session = await this.bookingRequestRepository.startTransaction();
     try {
+      //Mongo creation
       const bookingRequest = await this.bookingRequestRepository.create(data, { session });
       await session.commitTransaction();
       this.searchService.indexBookingRequest(bookingRequest);
-      return bookingRequest;
+
+      //Firebase Creation
+      const firebaseAdmin = this.firebaseService.getAdmin();
+      const database = firebaseAdmin.database();
+      const ref = database.ref('bookingRequests').child(bookingRequest._id.toString()).set(bookingRequest);
+
+      return {bookingRequest};
     }
     catch (e) {
       await session.abortTransaction();
@@ -126,6 +135,12 @@ export class CustomerInfoReceiverService {
       }
       await session.commitTransaction();
       this.searchService.indexBookingRequest(bookingRequest);
+
+      //Firebase creation
+      const firebaseAdmin = this.firebaseService.getAdmin();
+      const database = firebaseAdmin.database();
+      const ref = database.ref('bookingRequests').child(bookingRequest._id.toString()).set(bookingRequest);
+
       return bookingRequest;
     }
     catch (e) {
@@ -143,7 +158,7 @@ export class CustomerInfoReceiverService {
       const results = []
       for (let i = 0; i < bookingRequest.length; i++) {
         let flight_distance = getDistance(dto.latitude, dto.longitude, bookingRequest[i].pickup_latitude, bookingRequest[i].pickup_longitude);
-        flight_distance = +flight_distance.toFixed(2);
+        flight_distance = + flight_distance.toFixed(2);
         let result = {
           flight_distance: flight_distance,
           ...bookingRequest[i]
@@ -166,7 +181,7 @@ export class CustomerInfoReceiverService {
       const total_price = await this.bookingRequestRepository.calculateTotalPriceByQuery({});
       const total_price_completed = await this.bookingRequestRepository.calculateTotalPriceByQuery({ status: Status.COMPLETED });
       let profit = total_price * 0.3;
-      profit = +profit.toFixed(2);
+      profit = + profit.toFixed(2);
 
       return { total_request, total_completed_request, total_price, total_price_completed, profit };
     }
@@ -195,6 +210,11 @@ export class CustomerInfoReceiverService {
               status: Status.INPROGRESS
             }
           );
+          // Firebase update
+          const firebaseAdmin = this.firebaseService.getAdmin();
+          const database = firebaseAdmin.database();
+          const ref = database.ref('bookingRequests').child(booking_id).update(result);
+
           return result;
         }
       }
@@ -221,6 +241,11 @@ export class CustomerInfoReceiverService {
               status: Status.COMPLETED
             }
           );
+
+          const firebaseAdmin = this.firebaseService.getAdmin();
+          const database = firebaseAdmin.database();
+          const ref = database.ref('bookingRequests').child(booking_id).update(result);
+
           return result;
         }
       }

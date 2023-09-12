@@ -1,7 +1,7 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { CustomerInfoReceiverService } from './customer-info-receiver.service';
 import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
-import { JwtAuthGuard, RmqService } from '@app/common';
+import { RmqService } from '@app/common';
 
 @Controller()
 export class CustomerInfoReceiverController {

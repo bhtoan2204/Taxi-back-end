@@ -9,8 +9,6 @@ import { UsersRepository } from './users.repository';
 import { CreateUserRequest } from './dto/create-user.request';
 import { User } from './schemas/users.schema';
 import { LatLongRequest } from './dto/latlong-request';
-import { ConfigService } from '@nestjs/config';
-import * as jwt from 'jsonwebtoken';
 import { Role } from '@app/common';
 
 @Injectable()

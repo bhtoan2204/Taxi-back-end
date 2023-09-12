@@ -52,36 +52,47 @@ export class CustomerService {
     }
   }
 
-  async getDriverLocation(bookingId: string){
-    try{
+  async getDriverLocation(bookingId: string) {
+    try {
       const check = this.locateClient.send('get_driver_location', { bookingId });
       const requests = await lastValueFrom(check);
       return requests;
     }
-    catch(e){
+    catch (e) {
       throw e
     }
   }
 
-  async rateDriver(dto: RatingDTO){
-    try{
+  async rateDriver(dto: RatingDTO) {
+    try {
       const check = this.trackerClient.send('rate_driver', { dto });
       const requests = await lastValueFrom(check);
       return requests;
     }
-    catch(e){
+    catch (e) {
       throw e
     }
   }
 
-  async getDriverRate(driver_id: string){
-    try{
-      const check = this.trackerClient.send('get_rate_driver', {driver_id});
+  async getDriverRate(driver_id: string) {
+    try {
+      const check = this.trackerClient.send('get_rate_driver', { driver_id });
       const requests = await lastValueFrom(check);
       return requests;
     }
-    catch(e){
+    catch (e) {
       throw e
+    }
+  }
+
+  async cancelRequest(user_id: string, booking_id: string) {
+    try {
+      const check = this.trackerClient.send('get_rate_driver', { user_id, booking_id });
+      const requests = await lastValueFrom(check);
+      return {requests, isSuccessful: true};
+    }
+    catch (e) {
+      throw e;
     }
   }
 }

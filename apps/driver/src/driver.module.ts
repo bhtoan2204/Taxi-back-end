@@ -5,8 +5,6 @@ import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { AuthModule, DatabaseModule, RmqModule } from '@app/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UsersRepository } from './repositories/users.repository';
-import { User, UserSchema } from './schema/users.schema';
 import { LOCATE_SERVICE, RECEIVER_SERVICE } from './constants/services';
 
 @Module({
@@ -16,10 +14,13 @@ import { LOCATE_SERVICE, RECEIVER_SERVICE } from './constants/services';
       validationSchema: Joi.object({
         MONGODB_URI: Joi.string().required(),
         PORT: Joi.number().required(),
+        TWILIO_ACCOUNT_SID: Joi.string().required(),
+        TWILIO_AUTH_TOKEN: Joi.string().required(),
+        TWILIO_PHONE_NUMBER: Joi.string().required()
       }),
       envFilePath: './apps/driver/.env'
     }),
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    MongooseModule,
     DatabaseModule,
     AuthModule,
     RmqModule.register({
@@ -30,6 +31,6 @@ import { LOCATE_SERVICE, RECEIVER_SERVICE } from './constants/services';
     }),
   ],
   controllers: [DriverController],
-  providers: [DriverService, UsersRepository],
+  providers: [DriverService],
 })
 export class DriverModule {}

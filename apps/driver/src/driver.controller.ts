@@ -1,11 +1,11 @@
-import { Controller, Get, Patch, UseGuards, Req, Headers, Body, Query } from '@nestjs/common';
+import { Controller, Get, Patch, UseGuards, Req, Headers, Body, Query, Post } from '@nestjs/common';
 import { DriverService } from './driver.service';
 import { JwtAuthGuard } from '@app/common';
 import { DriverGuard } from '@app/common/auth/driver.guard';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { UserInforPayload } from './constants/services';
 import { LatLongDTO } from './dto/latlong.request';
-import { request } from 'http';
+import { PhoneDTO } from './dto/sendSMS.request';
 
 @ApiTags('Driver')
 @Controller()
@@ -53,5 +53,12 @@ export class DriverController {
   async setComplete(@Query('booking_id') booking_id: string, @Req() request, @Headers('authentication') authentication: string){
     const { _id } = request.user as UserInforPayload;
     return this.driverService.setCompleted(_id, booking_id);
+  }
+
+  @Post('sendSMS')
+  @UseGuards(DriverGuard)
+  async sendSMS(@Body() dto: PhoneDTO, @Req() request, @Headers('authentication') authentication: string){
+    const driver = request.user as UserInforPayload;
+    return this.driverService.sendSms(dto.phone, driver);
   }
 }

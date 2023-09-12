@@ -62,4 +62,11 @@ export class CustomerController {
   async getDriverRate(@Query('driver_id') driver_id: string, @Headers('authentication') authentication: string){
     return this.customerService.getDriverRate(driver_id);
   }
+
+  @Post('cancelRequest')
+  @UseGuards(CustomerGuard)
+  async cancelRequest(@Body() dto: BookingRequestId, @Req() request ,@Headers('authentication') authentication: string){
+    const { _id } = request.user as UserInforPayload;
+    return this.customerService.cancelRequest(_id, dto.booking_id);
+  }
 }

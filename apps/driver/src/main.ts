@@ -37,7 +37,7 @@ async function bootstrap() {
       'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-standalone-preset.min.css',
       'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui.css',
     ],
-  })
+  });
 
   app.enableCors({
     origin: '*',
@@ -45,7 +45,6 @@ async function bootstrap() {
     allowedHeaders: '*',
   });
   
-
   await app.listen(configService.get('PORT'));
 }
 bootstrap();
