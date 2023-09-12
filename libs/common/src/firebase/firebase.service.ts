@@ -41,15 +41,13 @@ export class FirebaseService {
         title,
         body,
       },
-      token: deviceToken, // Định danh thiết bị của người dùng
+      token: deviceToken,
     };
     return this.firebaseAdmin.messaging().send(message)
       .then((response) => {
-        console.log('Successfully sent message:', response);
         return response;
       })
       .catch((error) => {
-        console.error('Error sending message:', error);
         throw error;
       });
   }

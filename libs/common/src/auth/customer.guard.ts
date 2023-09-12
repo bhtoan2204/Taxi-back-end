@@ -8,7 +8,6 @@ export class CustomerGuard implements CanActivate {
         context: ExecutionContext,
     ): boolean | Promise<boolean> | Observable<boolean> {
         const user = this.getUser(context);
-        console.log(user)
         const check = (user.role === Role.CUSTOMER);
         if (!check){
             throw new UnauthorizedException('You not allowed to access this resource')
