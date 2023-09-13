@@ -51,7 +51,7 @@ export class AdminController {
   }
 
   @UseGuards(AdminGuard)
-  @Get('getStatitics')
+  @Get('getStatistics')
   async getStatitics(@Headers('authentication') authentication: string){
     return this.adminService.getStatitics();
   }
