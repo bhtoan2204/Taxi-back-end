@@ -57,6 +57,20 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules
 
+  revenue:
+    build:
+      context: .
+      dockerfile: ./apps/revenue/Dockerfile
+      target: development
+    command: yarn run start:dev revenue
+    depends_on:
+      - auth
+    env_file:
+      - ./apps/revenue/.env
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
   auth:
     build: 
       context: .

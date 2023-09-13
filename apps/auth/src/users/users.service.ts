@@ -32,7 +32,7 @@ export class UsersService {
         });
         const firebaseAdmin = this.firebaseService.getAdmin();
         const database = firebaseAdmin.database();
-        const ref = database.ref('users').child(user._id.toString()).set(user);
+        database.ref('users').child(user._id.toString()).set(user);
         return request;
     }
 

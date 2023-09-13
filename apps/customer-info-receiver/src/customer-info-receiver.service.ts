@@ -37,28 +37,21 @@ export class CustomerInfoReceiverService {
     return await this.bookingRequestRepository.find({});
   }
 
-  async searchBookingRequest(text: string, offset?: number, limit?: number, startId?: number) {
+  async searchBookingRequest(text: string) {
     try {
-      const { results, count } = await this.searchService.search(
-        text,
-        offset,
-        limit,
-        startId,
-      );
+      const { results } = await this.searchService.search(text);
       const ids = results.map((result) => result.id);
 
       if (!ids.length) {
         return {
-          items: [],
-          count,
+          items: []
         };
       }
       const items = await this.bookingRequestRepository.find({
         _id: { $in: ids }
       });
       return {
-        items,
-        count,
+        items
       };
     }
     catch (e) {
@@ -86,7 +79,7 @@ export class CustomerInfoReceiverService {
       //Firebase Creation
       const firebaseAdmin = this.firebaseService.getAdmin();
       const database = firebaseAdmin.database();
-      const ref = database.ref('bookingRequests').child(bookingRequest._id.toString()).set(bookingRequest);
+      database.ref('bookingRequests').child(bookingRequest._id.toString()).set(bookingRequest);
 
       return {bookingRequest};
     }
@@ -140,7 +133,7 @@ export class CustomerInfoReceiverService {
       //Firebase creation
       const firebaseAdmin = this.firebaseService.getAdmin();
       const database = firebaseAdmin.database();
-      const ref = database.ref('bookingRequests').child(bookingRequest._id.toString()).set(bookingRequest);
+      database.ref('bookingRequests').child(bookingRequest._id.toString()).set(bookingRequest);
 
       return bookingRequest;
     }
@@ -198,7 +191,7 @@ export class CustomerInfoReceiverService {
           // Firebase update
           const firebaseAdmin = this.firebaseService.getAdmin();
           const database = firebaseAdmin.database();
-          const ref = database.ref('bookingRequests').child(booking_id).update(result);
+          database.ref('bookingRequests').child(booking_id).update(result);
 
           return result;
         }
@@ -229,8 +222,7 @@ export class CustomerInfoReceiverService {
 
           const firebaseAdmin = this.firebaseService.getAdmin();
           const database = firebaseAdmin.database();
-          const ref = database.ref('bookingRequests').child(booking_id).update(result);
-
+          database.ref('bookingRequests').child(booking_id).update(result);
           return result;
         }
       }
@@ -260,7 +252,7 @@ export class CustomerInfoReceiverService {
 
           const firebaseAdmin = this.firebaseService.getAdmin();
           const database = firebaseAdmin.database();
-          const ref = database.ref('bookingRequests').child(booking_id).update(result);
+          database.ref('bookingRequests').child(booking_id).update(result);
 
           return result;
         }

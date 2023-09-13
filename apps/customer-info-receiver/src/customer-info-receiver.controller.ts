@@ -18,7 +18,7 @@ export class CustomerInfoReceiverController {
 
   @EventPattern('search_booking_request')
   async elasticSearchBookingRequest(@Payload() data: any, @Ctx() context: RmqContext){
-    const result = this.customerInfoReceiverService.searchBookingRequest(data.text, data.offset, data.limit, data.startId);
+    const result = this.customerInfoReceiverService.searchBookingRequest(data.text);
     this.rmqService.ack(context);
     return result;
   }
@@ -74,7 +74,7 @@ export class CustomerInfoReceiverController {
 
   @EventPattern('cancel_booking_request')
   async setCancel(@Payload() data: any, @Ctx() context: RmqContext){
-    const result = this.customerInfoReceiverService.setCancel(data.driver_id, data.booking_id);
+    const result = this.customerInfoReceiverService.setCancel(data.customer_id, data.booking_id);
     this.rmqService.ack(context);
     return result;
   }

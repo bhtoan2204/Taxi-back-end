@@ -1,6 +1,6 @@
 import { Controller, Post, UseGuards, Req, Body, Headers } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
-import { AuthService, TokenPayload } from './auth.service';
+import { AuthService } from './auth.service';
 import { CurrentUser } from './current-user.decorator';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';

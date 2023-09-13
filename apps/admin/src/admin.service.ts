@@ -24,20 +24,9 @@ export class AdminService {
     }
   }
 
-  async searchForBookingRequest(text: string, offset?: number, limit?: number, startId?: number,) {
+  async searchForBookingRequest(text: string) {
     try {
-      const check = this.receiverClient.send('search_booking_request', { text, offset, limit, startId });
-      const requests = await lastValueFrom(check);
-      return requests;
-    }
-    catch (e) {
-      throw new UnauthorizedException(e);
-    }
-  }
-
-  async getBookingRequest(offset?: number, limit?: number, startId?: number) {
-    try {
-      const check = this.receiverClient.send('get_booking_request_paginate', { offset, limit, startId });
+      const check = this.receiverClient.send('search_booking_request', { text });
       const requests = await lastValueFrom(check);
       return requests;
     }

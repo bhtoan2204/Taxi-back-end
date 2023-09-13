@@ -85,9 +85,9 @@ export class CustomerService {
     }
   }
 
-  async cancelRequest(user_id: string, booking_id: string) {
+  async cancelRequest(customer_id: string, booking_id: string) {
     try {
-      const check = this.receiverClient.send('cancel_booking_request', { user_id, booking_id });
+      const check = this.receiverClient.send('cancel_booking_request', { customer_id, booking_id });
       const requests = await lastValueFrom(check);
       return {requests, isSuccessful: true};
     }

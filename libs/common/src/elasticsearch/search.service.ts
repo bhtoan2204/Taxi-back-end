@@ -25,30 +25,9 @@ export class SearchService {
         });
     }
 
-    async count(query: string, fields: string[]) {
-        const { body } = await this.elasticsearchService.count<BookingRequestCountResult>({
-            index: this.index,
-            body: {
-                query: {
-                    multi_match: {
-                        query,
-                        fields,
-                    },
-                },
-            },
-        });
-        return body.count;
-    }
-
-    async search(text: string, offset?: number, limit?: number, startId = 0) {
-        let separateCount = 0;
-        if (startId) {
-            separateCount = await this.count(text, ['phone', 'pickup_address']);
-        }
+    async search(text: string) {
         const { body } = await this.elasticsearchService.search<BookingRequestResult>({
             index: this.index,
-            from: offset,
-            size: limit,
             body: {
                 query: {
                     bool: {
@@ -73,12 +52,10 @@ export class SearchService {
                 },
             },
         });
-        const count = body.hits.total.value;
         const hits = body.hits.hits;
         const results = hits.map((item) => item._source);
 
         return {
-            count: startId ? separateCount : count,
             results,
         };
     }

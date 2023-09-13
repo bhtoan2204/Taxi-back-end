@@ -1,8 +1,6 @@
 import { Body, Controller, Get, Post, Req, Res, UseGuards, Query, Headers } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { JwtAuthGuard } from '@app/common';
-import { Request } from 'express';
-import PaginationParamsDto from './dto/paginationParams.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateBookingRequest } from './dto/createBookingRequest.request';
 import { AdminGuard } from '@app/common/auth/admin.guard';
@@ -32,16 +30,13 @@ export class AdminController {
   @Get('searchBookingRequest')
   async searchBookingRequest(
     @Query('search') search: string,
-    @Query() query: PaginationParamsDto,
     @Headers('authentication') authentication: string
   ) {
-    const { limit, offset, startId } = query;
-
     if (search) {
-      return this.adminService.searchForBookingRequest(search, offset, limit, startId);
+      return this.adminService.searchForBookingRequest(search);
     }
 
-    return this.adminService.getBookingRequest(offset, limit, startId);
+    return this.adminService.getAllBookingRequests();
   }
 
   @UseGuards(AdminGuard)
