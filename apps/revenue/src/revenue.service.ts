@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, RequestTimeoutException } from '@nestjs/common';
 import { BookingRequestRepository } from './repositories/bookingRequest.repository';
 import { Status } from '@app/common';
 
@@ -46,7 +46,7 @@ export class RevenueService {
       }
 
     } catch (error) {
-      console.error("Error fetching data:", error);
+      throw new RequestTimeoutException("Error fetching data:", error);
     }
   }
 

@@ -9,7 +9,6 @@ export class AdminService {
   constructor(
     @Inject(RECEIVER_SERVICE) private receiverClient: ClientProxy,
     @Inject(LOCATE_SERVICE) private locateClient: ClientProxy,
-    @Inject(TRACKER_SERVICE) private trackerClient: ClientProxy,
     @Inject(REVENUE_SERVICE) private revenueClient: ClientProxy,
   ) { }
 

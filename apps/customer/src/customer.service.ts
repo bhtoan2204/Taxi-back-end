@@ -15,9 +15,6 @@ export class CustomerService {
     @Inject(LOCATE_SERVICE) private locateClient: ClientProxy,
     @Inject(TRACKER_SERVICE) private trackerClient: ClientProxy,
   ) { }
-  getHello(): string {
-    return 'Hello World! From Customer';
-  }
 
   async createBookingRequestByCustomer(data: CreateBookingRequest, _id: string) {
     try {

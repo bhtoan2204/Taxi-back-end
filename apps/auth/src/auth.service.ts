@@ -16,8 +16,7 @@ export class AuthService {
   constructor(
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
-    private readonly refreshTokenRepository: RefreshTokenRepository,
-    private readonly userService: UsersService
+    private readonly refreshTokenRepository: RefreshTokenRepository
   ) { }
 
   async login(user: User) {

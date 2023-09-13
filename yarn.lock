@@ -938,9 +938,9 @@
     tslib "2.6.2"
 
 "@nestjs/config@^3.0.1":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@nestjs/config/-/config-3.1.0.tgz#d6e36122fefd3155651386405557b1adf1c8dbd3"
-  integrity sha512-yaAM30odymAD1d85QJreb0MXEu8AaHmTDl0q4jJTIKnjUnypjF1uO34/6ayYG2eY6jByBAtoRTxo8NCrlwBLUw==
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@nestjs/config/-/config-3.1.1.tgz#51e23ed84debd08afb86acf7b92bc4bf341797da"
+  integrity sha512-qu5QlNiJdqQtOsnB6lx4JCXPQ96jkKUsOGd+JXfXwqJqZcOSAq6heNFg0opW4pq4J/VZoNwoo87TNnx9wthnqQ==
   dependencies:
     dotenv "16.3.1"
     dotenv-expand "10.0.0"
@@ -2662,9 +2662,9 @@ camelcase@^7.0.1:
   integrity sha512-xlx1yCK2Oc1APsPXDL2LdlNP6+uu8OCDdhOBSVT279M/S+y75O30C2VuD8T2ogdePBBl7PfPF4504tnLgX3zfw==
 
 caniuse-lite@^1.0.30001517:
-  version "1.0.30001533"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001533.tgz#1180daeb2518b93c82f19b904d1fefcf82197707"
-  integrity sha512-9aY/b05NKU4Yl2sbcJhn4A7MsGwR1EPfW/nrqsnqVA0Oq50wpmPaGI+R1Z0UKlUl96oxUkGEOILWtOHck0eCWw==
+  version "1.0.30001534"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001534.tgz#f24a9b2a6d39630bac5c132b5dff89b39a12e7dd"
+  integrity sha512-vlPVrhsCS7XaSh2VvWluIQEzVhefrUQcEsQWSS5A5V+dM07uv1qHeQzAOTGIMy9i3e9bH15+muvI/UHojVgS/Q==
 
 capture-stack-trace@^1.0.0:
   version "1.0.2"
@@ -2839,9 +2839,9 @@ cli-cursor@^3.1.0:
     restore-cursor "^3.1.0"
 
 cli-spinners@^2.5.0:
-  version "2.9.0"
-  resolved "https://registry.yarnpkg.com/cli-spinners/-/cli-spinners-2.9.0.tgz#5881d0ad96381e117bbe07ad91f2008fe6ffd8db"
-  integrity sha512-4/aL9X3Wh0yiMQlE+eeRhWP6vclO3QRtw1JHKIT0FFUs5FjpFmESqtMvYZ0+lbzBw900b95mS0hohy+qn2VK/g==
+  version "2.9.1"
+  resolved "https://registry.yarnpkg.com/cli-spinners/-/cli-spinners-2.9.1.tgz#9c0b9dad69a6d47cbb4333c14319b060ed395a35"
+  integrity sha512-jHgecW0pxkonBJdrKsqxgRX9AcG+u/5k0Q7WPDfi8AogLAdwxEkyYYNWwZ5GvVFoFx2uiY1eNcSK00fh+1+FyQ==
 
 cli-table3@0.6.3, cli-table3@^0.6.3:
   version "0.6.3"
@@ -3459,9 +3459,9 @@ ee-first@1.1.1:
   integrity sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==
 
 electron-to-chromium@^1.4.477:
-  version "1.4.515"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.515.tgz#f5fec9662106ac5752894af221606cf4db443e70"
-  integrity sha512-VTq6vjk3kCfG2qdzQRd/i9dIyVVm0dbtZIgFzrLgfB73mXDQT2HPKVRc1EoZcAVUv9XhXAu08DWqJuababdGGg==
+  version "1.4.519"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.519.tgz#01b9bc3f1bb50c4971bdd1eeca6d9a73575bd581"
+  integrity sha512-kqs9oGYL4UFVkLKhqCTgBCYZv+wZ374yABDMqlDda9HvlkQxvSr7kgf4hfWVjMieDbX+1MwPHFBsOGCMIBaFKg==
 
 emittery@^0.13.1:
   version "0.13.1"
@@ -7150,9 +7150,9 @@ npm-bundled@^3.0.0:
     npm-normalize-package-bin "^3.0.0"
 
 npm-check-updates@^16.13.2:
-  version "16.13.3"
-  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-16.13.3.tgz#136f0e008b82c34be4b758260c3582214a07527e"
-  integrity sha512-l3FQtm+ZtDwqtK2r27vCuNdtnoDsXzk8D2WczvrAJy2bGPZJvRmuUa/Q9Gv+AbZV0IHSNJD2oHtQqUeqQRhEsw==
+  version "16.14.0"
+  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-16.14.0.tgz#e34b5af1176be2347b012946ad9bd0133bfed13e"
+  integrity sha512-0R4S0qsx2FhuSiIYloHc7RQwfZpzO4jdL3rUoYwbOkx5fBc9u77GHHS0FlXYpczHR/kPYmmB/CRkFElOofVeSg==
   dependencies:
     chalk "^5.3.0"
     cli-table3 "^0.6.3"
@@ -7182,6 +7182,7 @@ npm-check-updates@^16.13.2:
     semver-utils "^1.1.4"
     source-map-support "^0.5.21"
     spawn-please "^2.0.1"
+    strip-ansi "^7.1.0"
     strip-json-comments "^5.0.1"
     untildify "^4.0.0"
     update-notifier "^6.0.2"
@@ -8860,7 +8861,7 @@ strip-ansi@^4.0.0:
   dependencies:
     ansi-regex "^3.0.0"
 
-strip-ansi@^7.0.1:
+strip-ansi@^7.0.1, strip-ansi@^7.1.0:
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-7.1.0.tgz#d5b6568ca689d8561370b0707685d22434faff45"
   integrity sha512-iq6eVVI64nQQTRYq2KtEg2d2uU7LElhTJwsH4YzIHZshxlgZms/wIc4VoDQTlG/IvVIrBKG06CrZnp0qv7hkcQ==

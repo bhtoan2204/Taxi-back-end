@@ -6,6 +6,7 @@ import {
   UpdateQuery,
   SaveOptions,
   Connection,
+  PipelineStage,
 } from 'mongoose';
 import { AbstractDocument } from './abstract.schema';
 
@@ -105,7 +106,7 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
   async calculateTotalPriceByQuery(query: Record<string, any>): Promise<number> {
     const aggregationPipeline = [
       {
-        $match: query // Use the provided query object
+        $match: query
       },
       {
         $group: {
@@ -123,6 +124,4 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
       return 0; // Return 0 if no matching documents are found
     }
   }
-  
-
 }

@@ -4,7 +4,7 @@ import { AdminService } from './admin.service';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule, DatabaseModule, RmqModule } from '@app/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { RECEIVER_SERVICE, LOCATE_SERVICE, TRACKER_SERVICE, REVENUE_SERVICE } from './constants/services';
+import { RECEIVER_SERVICE, LOCATE_SERVICE, REVENUE_SERVICE } from './constants/services';
 import * as Joi from 'joi';
 
 @Module({
@@ -26,9 +26,6 @@ import * as Joi from 'joi';
     }),
     RmqModule.register({
       name: LOCATE_SERVICE
-    }),
-    RmqModule.register({
-      name: TRACKER_SERVICE
     }),
     RmqModule.register({
       name: REVENUE_SERVICE
