@@ -71,4 +71,11 @@ export class CustomerInfoReceiverController {
     this.rmqService.ack(context);
     return result;
   }
+
+  @EventPattern('cancel_booking_request')
+  async setCancel(@Payload() data: any, @Ctx() context: RmqContext){
+    const result = this.customerInfoReceiverService.setCancel(data.driver_id, data.booking_id);
+    this.rmqService.ack(context);
+    return result;
+  }
 }

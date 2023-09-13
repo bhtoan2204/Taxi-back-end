@@ -239,5 +239,36 @@ export class CustomerInfoReceiverService {
       throw e;
     }
   }
+
+  async setCancel(driver_id: string, booking_id: string) {
+    try {
+      const bookingRequest = await this.bookingRequestRepository.findOrFail({ _id: booking_id });
+      if (bookingRequest === null) {
+        return new NotFoundException('Booking Request not found');
+      }
+      else {
+        if (bookingRequest.driver_id !== driver_id) {
+          return new ConflictException('This driver has no permission to access this booking request')
+        }
+        else {
+          const result = await this.bookingRequestRepository.findOneAndUpdate(
+            { _id: booking_id },
+            {
+              status: Status.CANCEL
+            }
+          );
+
+          const firebaseAdmin = this.firebaseService.getAdmin();
+          const database = firebaseAdmin.database();
+          const ref = database.ref('bookingRequests').child(booking_id).update(result);
+
+          return result;
+        }
+      }
+    }
+    catch (e) {
+      throw e;
+    }
+  }
 }
 

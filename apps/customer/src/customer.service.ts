@@ -87,7 +87,7 @@ export class CustomerService {
 
   async cancelRequest(user_id: string, booking_id: string) {
     try {
-      const check = this.trackerClient.send('get_rate_driver', { user_id, booking_id });
+      const check = this.receiverClient.send('cancel_booking_request', { user_id, booking_id });
       const requests = await lastValueFrom(check);
       return {requests, isSuccessful: true};
     }
