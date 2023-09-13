@@ -81,6 +81,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/customer-address-positioning/tsconfig.app.json"
       }
+    },
+    "revenue": {
+      "type": "application",
+      "root": "apps/revenue",
+      "entryFile": "main",
+      "sourceRoot": "apps/revenue/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/revenue/tsconfig.app.json"
+      }
     }
   }
 }

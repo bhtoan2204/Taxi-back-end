@@ -58,13 +58,6 @@ export class CustomerInfoReceiverController {
     return result;
   }
 
-  @EventPattern('get_statistics')
-  async getStatistics(@Ctx() context: RmqContext){
-    const result = this.customerInfoReceiverService.getStatistics();
-    this.rmqService.ack(context);
-    return result;
-  }
-
   @EventPattern('accept_booking_request')
   async acceptBookingRequest(@Payload() data: any, @Ctx() context: RmqContext){
     const result = this.customerInfoReceiverService.acceptBookingRequest(data.driver_id, data.booking_id);

@@ -3,13 +3,13 @@ import { CustomerAddressPositioningController } from './customer-address-positio
 import { CustomerAddressPositioningService } from './customer-address-positioning.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule, DatabaseModule, RmqModule } from '@app/common';
-import * as Joi from 'joi';
 import { UsersRepository } from './repositories/users.repository';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './schema/users.schema';
 import { HttpModule } from '@nestjs/axios';
 import { BookingRequestRepository } from './repositories/bookingRequest.repository';
 import { BookingRequest, BookingRequestSchema } from './schema/bookingRequest.schema';
+import * as Joi from 'joi';
 
 @Module({
   imports: [

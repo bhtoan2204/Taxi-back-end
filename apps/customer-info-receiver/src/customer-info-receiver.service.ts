@@ -175,22 +175,6 @@ export class CustomerInfoReceiverService {
     }
   }
 
-  async getStatistics() {
-    try {
-      const total_request = await this.bookingRequestRepository.count({});
-      const total_completed_request = await this.bookingRequestRepository.count({ status: Status.COMPLETED });
-      const total_price = await this.bookingRequestRepository.calculateTotalPriceByQuery({});
-      const total_price_completed = await this.bookingRequestRepository.calculateTotalPriceByQuery({ status: Status.COMPLETED });
-      let profit = total_price * 0.3;
-      profit = + profit.toFixed(2);
-
-      return { total_request, total_completed_request, total_price, total_price_completed, profit };
-    }
-    catch (e) {
-      throw e;
-    }
-  }
-
   async acceptBookingRequest(driver_id: string, booking_id: string) {
     try {
       const bookingRequest = await this.bookingRequestRepository.findOrFail({
