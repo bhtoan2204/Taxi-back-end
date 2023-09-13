@@ -240,15 +240,15 @@ export class CustomerInfoReceiverService {
     }
   }
 
-  async setCancel(driver_id: string, booking_id: string) {
+  async setCancel(customer_id: string, booking_id: string) {
     try {
       const bookingRequest = await this.bookingRequestRepository.findOrFail({ _id: booking_id });
       if (bookingRequest === null) {
         return new NotFoundException('Booking Request not found');
       }
       else {
-        if (bookingRequest.driver_id !== driver_id) {
-          return new ConflictException('This driver has no permission to access this booking request')
+        if (bookingRequest.customer_id !== customer_id) {
+          return new ConflictException('This customer has no permission to access this booking request')
         }
         else {
           const result = await this.bookingRequestRepository.findOneAndUpdate(
