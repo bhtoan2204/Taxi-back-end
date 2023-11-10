@@ -3,7 +3,6 @@ import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { BookingRequest } from './schema/bookingRequest.schema';
 import BookingRequestResult from './interface/bookingRequest.search-result.interface';
 import BookingRequestBody from './interface/bookingRequest.search-body.interface';
-import BookingRequestCountResult from './interface/bookingRequest.count-result.interface';
 
 @Injectable()
 export class SearchService {

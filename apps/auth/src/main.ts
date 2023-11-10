@@ -13,14 +13,14 @@ async function bootstrap() {
   app.connectMicroservice<RmqOptions>(rmqService.getOptions('AUTH', true));
   app.useGlobalPipes(new ValidationPipe());
   const configService = app.get(ConfigService);
-  
+
   const configSwagger = new DocumentBuilder()
     .setTitle('Authentication')
     .setDescription('Authentication API')
     .setVersion('1.0')
     .addTag('taxi')
     .build()
-  
+
   const document = SwaggerModule.createDocument(app, configSwagger);
   SwaggerModule.setup('', app, document, {
     customfavIcon: 'https://cdn-icons-png.flaticon.com/512/10095/10095455.png',

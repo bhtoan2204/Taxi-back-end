@@ -3,7 +3,6 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { User } from './users/schemas/users.schema';
 import { RefreshTokenRepository } from './refreshToken/refreshToken.repository';
-import { UsersService } from './users/users.service';
 
 export interface TokenPayload {
   userId: string;

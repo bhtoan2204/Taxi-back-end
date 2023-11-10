@@ -34,4 +34,4 @@ import * as Joi from 'joi';
   controllers: [AdminController],
   providers: [AdminService],
 })
-export class AdminModule {}
+export class AdminModule { }
